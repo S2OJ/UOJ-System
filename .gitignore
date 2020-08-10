@@ -1,0 +1,16 @@
+.*.swo
+.*.swp
+
+judger/uoj_judger/builtin/checker/*
+^judger/uoj_judger/builtin/checker/*.cpp
+judger/.conf.json
+judger/log/judge.log
+judger/judge_client
+judger/uoj_judger/builtin/judger/judger
+judger/uoj_judger/data
+judger/uoj_judger/include/uoj_work_path.h
+judger/uoj_judger/main_judger
+judger/uoj_judger/run/formatter
+judger/uoj_judger/run/run_interaction
+judger/uoj_judger/run/run_program
+web/app/.config.php
