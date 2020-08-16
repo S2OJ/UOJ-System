@@ -295,6 +295,7 @@ CREATE TABLE `contests_registrants` (
   `contest_id` int(11) NOT NULL,
   `has_participated` tinyint(1) NOT NULL,
   `rank` int(11) NOT NULL,
+  `rating_change` int(11) NOT NULL,
   PRIMARY KEY (`contest_id`,`username`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;

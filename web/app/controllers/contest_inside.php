@@ -79,7 +79,7 @@
 	}
 	
 	if (isSuperUser($myUser)) {
-		if (CONTEST_PENDING_FINAL_TEST <= $contest['cur_progress'] && $contest['cur_progress'] <= CONTEST_TESTING) {
+		if ($contest['cur_progress'] >= CONTEST_PENDING_FINAL_TEST) {
 			$start_test_form = new UOJForm('start_test');
 			$start_test_form->handle = function() {
 				global $contest;
@@ -131,25 +131,31 @@
 				}
 
 				for ($i = 0; $i < count($standings); $i++) {
-					$user = queryUser($standings[$i][2][0]);
-					$change = $ratings[$i] - $user['rating'];
+					$username = $standings[$i][2][0];
+					$user = queryUser($username);
+					$old_rating = $standings[$i][2][1];
+					$change = $ratings[$i] - $old_rating;
+					$registrant = fetchRegistrant($contest['id'], $username);
+					$already_changed = (int)$registrant['rating_change'];
+					$after_rating = $user['rating'] - $already_changed + $change;
 					$user_link = getUserLink($user['username']);
 
 					if ($change != 0) {
 						$tail = '<strong style="color:red">' . ($change > 0 ? '+' : '') . $change . '</strong>';
 						$content = <<<EOD
 <p>${user_link} 您好：</p>
-<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后的Rating变化为${tail}，当前Rating为 <strong style="color:red">{$ratings[$i]}</strong>。</p>
+<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后的Rating变化为${tail}，当前Rating为 <strong style="color:red">{$after_rating}</strong>。</p>
 EOD;
 					} else {
 						$content = <<<EOD
 <p>${user_link} 您好：</p>
-<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后Rating没有变化。当前Rating为 <strong style="color:red">{$ratings[$i]}</strong>。</p>
+<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后Rating没有变化。当前Rating为 <strong style="color:red">{$after_rating}</strong>。</p>
 EOD;
 					}
+					
 					sendSystemMsg($user['username'], 'Rating变化通知', $content);
-					DB::query("update user_info set rating = {$ratings[$i]} where username = '{$standings[$i][2][0]}'");
-					DB::query("update contests_registrants set rank = {$standings[$i][3]} where contest_id = {$contest['id']} and username = '{$standings[$i][2][0]}'");
+					DB::query("update user_info set rating = {$after_rating} where username = '{$standings[$i][2][0]}'");
+					DB::query("update contests_registrants set rank = {$standings[$i][3]}, rating_change = {$change} where contest_id = {$contest['id']} and username = '{$standings[$i][2][0]}'");
 				}
 				DB::query("update contests set status = 'finished' where id = {$contest['id']}");
 			};

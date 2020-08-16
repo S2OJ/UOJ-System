@@ -14,6 +14,10 @@ function calcRating($standings, $K = 400) {
 	for ($i = 0; $i < $n; ++$i) {
 		$rating[$i] = $standings[$i][2][1];
 	}
+
+	if ($n == 0) {
+		return $rating;
+	}
 	
 	$rank = array();
 	$foot = array();
@@ -182,6 +186,13 @@ function queryContestData($contest, $config = array()) {
 	return ['problems' => $problems, 'data' => $data, 'people' => $people];
 }
 
+function fetchRegistrant($contest_id, $username) {
+	if (!validateUsername($username)) {
+		return null;
+	}
+	return DB::selectFirst("select * from contests_registrants where username='$username' and contest_id = $contest_id", MYSQLI_ASSOC);
+}
+
 function calcStandings($contest, $contest_data, &$score, &$standings, $update_contests_submissions = false) {
 	// score: username, problem_pos => score, penalty, id
 	$score = array();
@@ -210,7 +221,7 @@ function calcStandings($contest, $contest_data, &$score, &$standings, $update_co
 				$cur[0] += $cur_row[0];
 				$cur[1] += $cur_row[1];
 				if ($update_contests_submissions) {
-					DB::insert("insert into contests_submissions (contest_id, submitter, problem_id, submission_id, score, penalty) values ({$contest['id']}, '{$person[0]}', {$contest_data['problems'][$i]}, {$cur_row[2]}, {$cur_row[0]}, {$cur_row[1]})");
+					DB::insert("replace into contests_submissions (contest_id, submitter, problem_id, submission_id, score, penalty) values ({$contest['id']}, '{$person[0]}', {$contest_data['problems'][$i]}, {$cur_row[2]}, {$cur_row[0]}, {$cur_row[1]})");
 				}
 			}
 		}

@@ -13,4 +13,10 @@ judger/uoj_judger/main_judger
 judger/uoj_judger/run/formatter
 judger/uoj_judger/run/run_interaction
 judger/uoj_judger/run/run_program
+judger/uoj_judger/result
+judger/uoj_judger/work
 web/app/.config.php
+web/app/storage/submission
+web/app/storage/tmp
+
+!.gitkeep
