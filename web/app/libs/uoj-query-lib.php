@@ -9,13 +9,24 @@ function hasProblemPermission($user, $problem) {
 	}
 	return DB::selectFirst("select * from problems_permissions where username = '{$user['username']}' and problem_id = {$problem['id']}") != null;
 }
-function hasViewPermission($str,$user,$problem,$submission) {
-	if($str=='ALL')
+
+function hasViewPermission($str, $user, $problem, $submission) {
+	if ($str=='ALL')
 		return true;
-	if($str=='ALL_AFTER_AC')
+	if ($str=='ALL_AFTER_AC')
+		return hasAC($user, $problem);
+	if ($str=='SELF')
+		return $submission['submitter'] == $user['username'];
+	return false;
+}
+
+function hasViewSolutionPermission($str, $user, $problem) {
+	if (isSuperUser($user))
+		return true;
+	if ($str=='ALL')
+		return true;
+	if ($str=='ALL_AFTER_AC')
 		return hasAC($user,$problem);
-	if($str=='SELF')
-		return $submission['submitter']==$user['username'];
 	return false;
 }
 
@@ -90,6 +101,9 @@ function queryZanVal($id, $type, $user) {
 
 function queryBlog($id) {
 	return DB::selectFirst("select * from blogs where id='$id'", MYSQLI_ASSOC);
+}
+function querySolution($problem_id, $blog_id) {
+	return DB::selectFirst("select * from problems_solutions where blog_id='$blog_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
 }
 function queryBlogTags($id) {
 	$tags = array();

@@ -43,6 +43,50 @@
 		</div>
 	</div>
 </div>
+
+<?php
+	if ($myUser) {
+		if (isSuperUser($myUser)) {
+			$from = "problems_solutions a inner join problems c on c.id = a.problem_id";
+			$cond = "a.is_hidden = 1";
+		} else {
+			$from = "problems_solutions a inner join problems_permissions b on a.problem_id = b.problem_id inner join problems c on c.id = a.problem_id";
+			$cond = "a.is_hidden = 1 and b.username = '{$myUser['username']}'";
+		}
+		
+		$count = DB::selectCount("select count(*) from {$from} where {$cond}");
+
+		if ($count > 0) {
+			echo '<div class="row">';
+			echo '<div class="col-sm-12 mt-4">';
+			echo '<h3>待审核题解</h3>';
+
+			$header = <<<EOD
+	<tr>
+		<th class="text-center" style="width:5em;">ID</th>
+		<th>题目</th>
+	</tr>
+EOD;
+			function echoProblem($problem) {
+				echo '<tr>';
+				echo '<td class="text-center">';
+				echo '#', $problem['id'], '</td>';
+				echo '<td class="text-left">';
+				echo '<a href="/problem/', $problem['id'], '">', $problem['title'], '</a>';
+				echo '</td>';
+			}
+
+			echoLongTable(array('distinct a.problem_id as id', 'c.title as title'), $from, $cond, 'order by id asc', $header, 'echoProblem', array(
+				'table_classes' => array('table', 'table-hover', 'table-striped', 'table-bordered'),
+				'page_len' => 100
+			));
+
+			echo '</div>';
+			echo '</div>';
+		}
+	}
+?>
+
 <div class="row">
 	<div class="col-sm-12 mt-4">
 		<h3><?= UOJLocale::get('top rated') ?></h3>

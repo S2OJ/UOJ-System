@@ -11,6 +11,7 @@ return [
 	'show statistics' => '显示提交情况',
 	'statement' => '描述',
 	'custom test' => '自定义测试',
+	'solutions' => '题解',
 	'manage' => '管理',
 	'submissions statistics' => '统计提交情况',
 	'statistics' => '统计',

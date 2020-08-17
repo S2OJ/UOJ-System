@@ -15,7 +15,7 @@
 	$blog_type = $blog['type'] == 'B' ? 'post' : 'slide';
 ?>
 <h2><?= $extra_text ?><a class="header-a" href="<?= HTML::blog_url(UOJContext::userid(), '/post/'.$blog['id']) ?>"><?= $blog['title'] ?></a></h2>
-<div><?= $blog['post_time'] ?> <strong>By</strong> <?= getUserLink($blog['poster']) ?></div>
+<div><?= $blog['post_time'] ?> <strong>By</strong> <?= getUserLink($blog['poster']) ?> (<strong>博客 ID: </strong> <?= $blog['id'] ?>) </div>
 <?php if (!$show_title_only): ?>
 <div class="card mb-4">
 	<div class="card-body">

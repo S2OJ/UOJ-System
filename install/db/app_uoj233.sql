@@ -519,6 +519,20 @@ LOCK TABLES `problems_permissions` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `problems_solutions`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `problems_solutions` (
+  `problem_id` int(11) NOT NULL,
+  `blog_id` int(11) NOT NULL,
+  `is_hidden` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`problem_id`, `blog_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `problems_tags`
 --
 

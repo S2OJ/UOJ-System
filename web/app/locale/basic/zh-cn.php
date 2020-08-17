@@ -65,5 +65,5 @@ return [
 	'male' => '男',
 	'female' => '女',
 	'server time' => '服务器时间',
-	'opensource project' => '开源项目'
+	'opensource project' => '开源项目，石家庄二中魔改版'
 ];

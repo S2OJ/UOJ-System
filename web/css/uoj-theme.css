@@ -393,3 +393,12 @@ pre {
 	padding-left:10px;
 	text-align:left;
 }
+
+form.uoj-form-inline {
+	display: inline-block;
+	margin-right: 0.3em;
+}
+
+td.success {
+	background-color: #99FF99;
+}

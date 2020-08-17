@@ -533,12 +533,30 @@ EOD
 		'查看测试点详细信息:',
 		$problem_extra_config['view_details_type']
 	);
+	$view_type_form->addVSelect('view_solution_type',
+		array('NONE' => '禁止',
+				'ALL_AFTER_AC' => 'AC后',
+				'ALL' => '所有人'
+		),
+		'查看题解:',
+		$problem_extra_config['view_solution_type']
+	);
+	$view_type_form->addVSelect('submit_solution_type',
+		array('NONE' => '禁止',
+				'ALL_AFTER_AC' => 'AC后',
+				'ALL' => '所有人'
+		),
+		'提交题解:',
+		$problem_extra_config['submit_solution_type']
+	);
 	$view_type_form->handle = function() {
 		global $problem, $problem_extra_config;
 		$config = $problem_extra_config;
 		$config['view_content_type'] = $_POST['view_content_type'];
 		$config['view_all_details_type'] = $_POST['view_all_details_type'];
 		$config['view_details_type'] = $_POST['view_details_type'];
+		$config['view_solution_type'] = $_POST['view_solution_type'];
+		$config['submit_solution_type'] = $_POST['submit_solution_type'];
 		$esc_config = DB::escape(json_encode($config));
 		DB::query("update problems set extra_config = '$esc_config' where id = '{$problem['id']}'");
 	};
@@ -668,7 +686,7 @@ EOD
 		<?php endif ?>
 		</div>
 		<div class="top-buffer-md">
-			<button id="button-display_view_type" type="button" class="btn btn-primary btn-block" onclick="$('#div-view_type').toggle('fast');">提交记录可视权限</button>
+			<button id="button-display_view_type" type="button" class="btn btn-primary btn-block" onclick="$('#div-view_type').toggle('fast');">可视权限</button>
 			<div class="top-buffer-sm" id="div-view_type" style="display:none; padding-left:5px; padding-right:5px;">
 				<?php $view_type_form->printHTML(); ?>
 			</div>

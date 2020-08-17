@@ -391,7 +391,13 @@ EOD
 		
 		public function printHTML() {
 			$form_entype_str = $this->is_big ? ' enctype="multipart/form-data"' : '';
-			echo '<form action="', $_SERVER['REQUEST_URI'], '" method="post" class="form-horizontal" id="form-', $this->form_name, '"', $form_entype_str, '>';
+			$form_class = "form-horizontal";
+			if ($this->submit_button_config['align'] == 'inline') {
+				$form_class .= " uoj-form-inline";
+			}
+			echo '<form action="', $_SERVER['REQUEST_URI'], '" method="post" class="', $form_class, '" id="form-', $this->form_name, '"', $form_entype_str;
+
+			echo ' >';
 			echo HTML::hiddenToken();
 			echo $this->main_html;
 			
@@ -408,14 +414,24 @@ EOD
 				if ($this->submit_button_config['align'] == 'offset') {
 					echo '<div class="form-group">';
 					echo '<div class="col-sm-offset-2 col-sm-3">';
+				} else if ($this->submit_button_config['align'] == 'inline') {
+
 				} else {
 					echo '<div class="text-', $this->submit_button_config['align'], '">';
 				}
-				echo '<button type="submit" id="button-submit-', $this->form_name, '" name="submit-', $this->form_name, '" value="', $this->form_name, '" class="mt-2 ', $this->submit_button_config['class_str'], '">', $this->submit_button_config['text'], '</button>';
+				echo '<button type="submit" id="button-submit-', $this->form_name, '" name="submit-', $this->form_name, '" value="', $this->form_name, '" class="';
+				if ($this->submit_button_config['align'] != 'inline') {
+					echo 'mt-2 ';
+				}
+				echo $this->submit_button_config['class_str'], '">', $this->submit_button_config['text'], '</button>';
 				if ($this->submit_button_config['align'] == 'offset') {
 					echo '</div>';
+					echo '</div>';
+				} else if ($this->submit_button_config['align'] == 'inline') {
+
+				} else {
+					echo '</div>';
 				}
-				echo '</div>';
 			}
 			
 			echo '</form>';

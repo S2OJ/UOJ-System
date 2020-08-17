@@ -12,6 +12,7 @@ return [
 	'show statistics' => 'Show statistics',
 	'statement' => 'Statement',
 	'custom test' => 'Custom Test',
+	'solutions' => 'Solutions',
 	'manage' => 'Manage',
 	'statistics' => 'Statistics',
 	'run' => 'Run',
