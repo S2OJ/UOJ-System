@@ -10,6 +10,7 @@ return [
 	'system manage' => '系统管理',
 	'contests' => '比赛',
 	'problems' => '题库',
+	'problems lists' => '题单',
 	'submissions' => '提交记录',
 	'hacks' => 'Hack!',
 	'blogs' => '博客',

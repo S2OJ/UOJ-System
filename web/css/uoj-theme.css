@@ -372,7 +372,7 @@ pre {
 	color: red;
 }
 
-.uoj-problem-tag {
+.uoj-problem-tag, .uoj-list-tag {
 	margin-left: 5px;
 	margin-right: 5px;
 }

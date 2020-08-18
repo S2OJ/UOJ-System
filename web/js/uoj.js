@@ -9,10 +9,10 @@ uojLocaleData = {
 		"zh-cn": "总分"
 	},
 	"contests::n participants": {
-		"en": function(n) {
+		"en": function (n) {
 			return n + " participant" + (n <= 1 ? '' : 's');
 		},
-		"zh-cn": function(n) {
+		"zh-cn": function (n) {
 			return "共 " + n + " 名参赛者";
 		}
 	},
@@ -97,8 +97,7 @@ function getPenaltyTimeStr(x) {
 	return hh + ':' + mm + ':' + ss;
 }
 
-function htmlspecialchars(str)
-{
+function htmlspecialchars(str) {
 	var s = "";
 	if (str.length == 0) return "";
 	s = str.replace(/&/g, "&amp;");
@@ -188,8 +187,8 @@ function replaceWithHighlightUsername() {
 	}
 }
 
-$.fn.uoj_honor = function() {
-	return this.each(function() {
+$.fn.uoj_honor = function () {
+	return this.each(function () {
 		var honor = $(this).text();
 		var rating = $(this).data("rating");
 		if (isNaN(rating)) {
@@ -280,13 +279,18 @@ function validateMotto(str) {
 }
 
 // tags
-$.fn.uoj_problem_tag = function() {
-	return this.each(function() {
+$.fn.uoj_problem_tag = function () {
+	return this.each(function () {
 		$(this).attr('href', uojHome + '/problems?tag=' + encodeURIComponent($(this).text()));
 	});
 }
-$.fn.uoj_blog_tag = function() {
-	return this.each(function() {
+$.fn.uoj_list_tag = function () {
+	return this.each(function () {
+		$(this).attr('href', uojHome + '/problem_lists?tag=' + encodeURIComponent($(this).text()));
+	});
+}
+$.fn.uoj_blog_tag = function () {
+	return this.each(function () {
 		$(this).attr('href', uojBlogUrl + '/archive?tag=' + encodeURIComponent($(this).text()));
 	});
 }
@@ -296,18 +300,18 @@ function click_zan(zan_id, zan_type, zan_delta, node) {
 	var loading_node = $('<div class="text-muted">loading...</div>');
 	$(node).replaceWith(loading_node);
 	$.post(zan_link + '/click-zan', {
-		id : zan_id,
-		delta : zan_delta,
-		type : zan_type
-	}, function(ret) {
+		id: zan_id,
+		delta: zan_delta,
+		type: zan_type
+	}, function (ret) {
 		$(loading_node).replaceWith($(ret).click_zan_block());
-	}).fail(function() {
+	}).fail(function () {
 		$(loading_node).replaceWith('<div class="text-danger">failed</div>');
 	});
 }
 
-$.fn.click_zan_block = function() {
-	return this.each(function() {
+$.fn.click_zan_block = function () {
+	return this.each(function () {
 		var id = $(this).data('id');
 		var type = $(this).data('type');
 		var val = parseInt($(this).data('val'));
@@ -331,17 +335,17 @@ $.fn.click_zan_block = function() {
 		} else {
 			$(this).addClass('uoj-click-zan-block-negative');
 		}
-		
+
 		var node = this;
-		var up_node = $('<a href="#" class="uoj-click-zan-up"><span class="glyphicon glyphicon-thumbs-up"></span>'+uojLocale('click-zan::good')+'</a>').click(function(e) {
+		var up_node = $('<a href="#" class="uoj-click-zan-up"><span class="glyphicon glyphicon-thumbs-up"></span>' + uojLocale('click-zan::good') + '</a>').click(function (e) {
 			e.preventDefault();
 			click_zan(id, type, 1, node);
 		});
-		var down_node = $('<a href="#" class="uoj-click-zan-down"><span class="glyphicon glyphicon-thumbs-down"></span>'+uojLocale('click-zan::bad')+'</a>').click(function(e) {
+		var down_node = $('<a href="#" class="uoj-click-zan-down"><span class="glyphicon glyphicon-thumbs-down"></span>' + uojLocale('click-zan::bad') + '</a>').click(function (e) {
 			e.preventDefault();
 			click_zan(id, type, -1, node);
 		});
-		
+
 		$(this)
 			.append(up_node)
 			.append(down_node)
@@ -357,7 +361,7 @@ function getCountdownStr(t) {
 	var mm = toFilledStr(x % 60, '0', 2);
 	x = Math.floor(x / 60);
 	var hh = x.toString();
-	
+
 	var res = '<span style="font-size:30px">';
 	res += '<span style="color:' + getColOfScore(Math.min(t / 10800 * 100, 100)) + '">' + hh + '</span>';
 	res += ':';
@@ -368,12 +372,12 @@ function getCountdownStr(t) {
 	return res;
 }
 
-$.fn.countdown = function(rest, callback) {
-	return this.each(function() {
+$.fn.countdown = function (rest, callback) {
+	return this.each(function () {
 		var start = new Date().getTime();
 		var cur_rest = rest != undefined ? rest : parseInt($(this).data('rest'));
 		var cur = this;
-		var countdown = function() {
+		var countdown = function () {
 			var passed = Math.floor((new Date().getTime() - start) / 1000);
 			if (passed >= cur_rest) {
 				$(cur).html(getCountdownStr(0));
@@ -395,12 +399,12 @@ function update_judgement_status_details(id) {
 	update_judgement_status_list.push(id);
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
 	function update() {
 		$.get("/submission-status-details", {
-				get: update_judgement_status_list
-			},
-			function(data) {
+			get: update_judgement_status_list
+		},
+			function (data) {
 				for (var i = 0; i < update_judgement_status_list.length; i++) {
 					$("#status_details_" + update_judgement_status_list[i]).html(data[i].html);
 					if (data[i].judged) {
@@ -408,10 +412,10 @@ $(document).ready(function() {
 					}
 				}
 			}, 'json').always(
-			function() {
-    			setTimeout(update, 500);
-	    	}
-	    );
+				function () {
+					setTimeout(update, 500);
+				}
+			);
 	}
 	if (update_judgement_status_list.length > 0) {
 		setTimeout(update, 500);
@@ -419,11 +423,11 @@ $(document).ready(function() {
 });
 
 // highlight
-$.fn.uoj_highlight = function() {
-	return $(this).each(function() {
+$.fn.uoj_highlight = function () {
+	return $(this).each(function () {
 		$(this).find("span.uoj-username").each(replaceWithHighlightUsername);
 		$(this).find(".uoj-honor").uoj_honor();
-		$(this).find(".uoj-score").each(function() {
+		$(this).find(".uoj-score").each(function () {
 			var score = parseInt($(this).text());
 			var maxscore = parseInt($(this).data('max'));
 			if (isNaN(score)) {
@@ -435,9 +439,9 @@ $.fn.uoj_highlight = function() {
 				$(this).css("color", getColOfScore(score / maxscore * 100));
 			}
 		});
-		$(this).find(".uoj-status").each(function() {
+		$(this).find(".uoj-status").each(function () {
 			var success = parseInt($(this).data("success"));
-			if(isNaN(success)){
+			if (isNaN(success)) {
 				return;
 			}
 			if (success == 1) {
@@ -448,6 +452,7 @@ $.fn.uoj_highlight = function() {
 			}
 		});
 		$(this).find(".uoj-problem-tag").uoj_problem_tag();
+		$(this).find(".uoj-list-tag").uoj_list_tag();
 		$(this).find(".uoj-blog-tag").uoj_blog_tag();
 		$(this).find(".uoj-click-zan-block").click_zan_block();
 		$(this).find(".countdown").countdown();
@@ -458,42 +463,42 @@ $.fn.uoj_highlight = function() {
 	});
 };
 
-$(document).ready(function() {
+$(document).ready(function () {
 	$('body').uoj_highlight();
 });
 
 // contest notice
 function checkContestNotice(id, lastTime) {
 	$.post('/contest/' + id.toString(), {
-			check_notice : '',
-			last_time : lastTime
-		},
-		function(data) {
-			setTimeout(function() {
+		check_notice: '',
+		last_time: lastTime
+	},
+		function (data) {
+			setTimeout(function () {
 				checkContestNotice(id, data.time);
 			}, 60000);
 			if (data.msg != undefined) {
-				var len=data.msg.length;
-				for (var i=0;i<len;i++) alert(data.msg[i]);
+				var len = data.msg.length;
+				for (var i = 0; i < len; i++) alert(data.msg[i]);
 			}
 		},
 		'json'
-	).fail(function() {
-		setTimeout(function() {
+	).fail(function () {
+		setTimeout(function () {
 			checkContestNotice(id, lastTime);
 		}, 60000);
 	});
 }
 
 // long table
-$.fn.long_table = function(data, cur_page, header_row, get_row_str, config) {
-	return this.each(function() {
+$.fn.long_table = function (data, cur_page, header_row, get_row_str, config) {
+	return this.each(function () {
 		var table_div = this;
-		
+
 		$(table_div).html('');
-		
+
 		var page_len = config.page_len != undefined ? config.page_len : 10;
-		
+
 		if (!config.echo_full) {
 			var n_rows = data.length;
 			var n_pages = Math.max(Math.ceil(n_rows / page_len), 1);
@@ -512,10 +517,10 @@ $.fn.long_table = function(data, cur_page, header_row, get_row_str, config) {
 			cur_page = 1;
 			var cur_start = (cur_page - 1) * page_len;
 		}
-		
+
 		var div_classes = config.div_classes != undefined ? config.div_classes : ['table-responsive'];
 		var table_classes = config.table_classes != undefined ? config.table_classes : ['table', 'table-bordered', 'table-hover', 'table-striped', 'table-text-center'];
-		
+
 		var now_cnt = 0;
 		var tbody = $('<tbody />')
 		for (var i = 0; i < page_len && cur_start + i < n_rows; i++) {
@@ -529,7 +534,7 @@ $.fn.long_table = function(data, cur_page, header_row, get_row_str, config) {
 		if (now_cnt == 0) {
 			tbody.append('<tr><td colspan="233">无</td></tr>');
 		}
-		
+
 		$(table_div).append(
 			$('<div class="' + div_classes.join(' ') + '" />').append(
 				$('<table class="' + table_classes.join(' ') + '" />').append(
@@ -539,22 +544,22 @@ $.fn.long_table = function(data, cur_page, header_row, get_row_str, config) {
 				)
 			)
 		);
-		
+
 		if (config.print_after_table != undefined) {
 			$(table_div).append(config.print_after_table());
 		}
-		
-		var get_page_li = function(p, h) {
+
+		var get_page_li = function (p, h) {
 			if (p == -1) {
 				return $('<li class="page-item"></li>').addClass('disabled').append($('<a class="page-link"></a>').append(h));
 			}
-			
+
 			var li = $('<li class="page-item"></li>');
 			if (p == cur_page) {
 				li.addClass('active');
 			}
 			li.append(
-				$('<a class="page-link"></a>').attr('href', '#' + table_div.id).append(h).click(function(e) {
+				$('<a class="page-link"></a>').attr('href', '#' + table_div.id).append(h).click(function (e) {
 					if (config.prevent_focus_on_click) {
 						e.preventDefault();
 					}
@@ -563,7 +568,7 @@ $.fn.long_table = function(data, cur_page, header_row, get_row_str, config) {
 			);
 			return li;
 		};
-		
+
 		if (n_pages > 1) {
 			var pagination = $('<ul class="pagination top-buffer-no bot-buffer-sm justify-content-center"></ul>');
 			if (cur_page > 1) {
@@ -643,7 +648,7 @@ function require_codemirror_mode(mode, callback) {
 
 // auto save
 function autosave_locally(interval, name, target) {
-	if (typeof(Storage) === "undefined") {
+	if (typeof (Storage) === "undefined") {
 		console.log('autosave_locally: Sorry! No Web Storage support..');
 		return;
 	}
@@ -653,7 +658,7 @@ function autosave_locally(interval, name, target) {
 	var full_name = name + '@' + uri;
 
 	target.val(localStorage.getItem(full_name));
-	var save = function() {
+	var save = function () {
 		localStorage.setItem(full_name, target.val());
 		setTimeout(save, interval);
 	};
@@ -661,8 +666,8 @@ function autosave_locally(interval, name, target) {
 }
 
 // source code form group
-$.fn.source_code_form_group = function(name, text, langs_options_html) {
-	return this.each(function() {
+$.fn.source_code_form_group = function (name, text, langs_options_html) {
+	return this.each(function () {
 		var input_language_id = 'input-' + name + '_language';
 		var input_language_name = name + '_language';
 		var input_upload_type_name = name + '_upload_type';
@@ -702,9 +707,9 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 				.append($('<div class="input-group"/>')
 					.append(input_file_path)
 					.append($('<span class="input-group-append"/>')
-						.append($('<button type="button" class="btn btn-primary">'+'<span class="glyphicon glyphicon-folder-open"></span> '+uojLocale('editor::browse')+'</button>')
+						.append($('<button type="button" class="btn btn-primary">' + '<span class="glyphicon glyphicon-folder-open"></span> ' + uojLocale('editor::browse') + '</button>')
 							.css('width', '100px')
-							.click(function() {
+							.click(function () {
 								input_file.click();
 							})
 						)
@@ -713,7 +718,7 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 				.append($('<span class="help-block" id="' + help_file_id + '"></span>'))
 		var div_help_language = $('<div id="' + div_help_language_id + '" class="col-sm-12 text-warning top-buffer-sm">');
 
-		var show_help_lang = function() {
+		var show_help_lang = function () {
 			if ($(this).val() == 'Java8' || $(this).val() == 'Java11') {
 				div_help_language.text('注意：Java 程序源代码中不应指定所在的 package。我们会在源代码中找到第一个被定义的类并以它的 main 函数为程序入口点。');
 			} else {
@@ -722,10 +727,10 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 		};
 
 		var advanced_editor = null;
-		var advanced_editor_init = function() {
-			require_codemirror({}, function() {
+		var advanced_editor_init = function () {
+			require_codemirror({}, function () {
 				var mode = get_codemirror_mode(input_language.val());
-				require_codemirror_mode(mode, function() {
+				require_codemirror_mode(mode, function () {
 					if (advanced_editor != null) {
 						return;
 					}
@@ -739,7 +744,7 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 						indentWithTabs: true,
 						theme: 'default'
 					});
-					advanced_editor.on('change', function() {
+					advanced_editor.on('change', function () {
 						advanced_editor.save();
 					});
 					$(advanced_editor.getWrapperElement()).css('box-shadow', '0 2px 10px rgba(0,0,0,0.2)');
@@ -748,7 +753,7 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 			});
 		}
 
-		var save_prefer_upload_type = function(type) {
+		var save_prefer_upload_type = function (type) {
 			$.cookie('uoj_source_code_form_group_preferred_upload_type', type, { expires: 7, path: '/' });
 		};
 
@@ -772,10 +777,10 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 
 		input_language.each(show_help_lang);
 		input_language.change(show_help_lang);
-		input_language.change(function() {
+		input_language.change(function () {
 			if (advanced_editor != null) {
 				var mode = get_codemirror_mode(input_language.val());
-				require_codemirror_mode(mode, function() {
+				require_codemirror_mode(mode, function () {
 					if (mode != get_codemirror_mode(input_language.val())) {
 						return;
 					}
@@ -783,20 +788,20 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 				});
 			}
 		})
-		input_upload_type_editor.click(function() {
+		input_upload_type_editor.click(function () {
 			div_editor.show('fast');
 			div_file.hide('fast');
 			save_prefer_upload_type('editor');
 		});
-		input_upload_type_file.click(function() {
+		input_upload_type_file.click(function () {
 			div_file.show('fast');
 			div_editor.hide('fast');
 			save_prefer_upload_type('file');
 		});
-		input_file.change(function() {
+		input_file.change(function () {
 			input_file_path.val(input_file.val());
 		});
-		input_use_advanced_editor.click(function() {
+		input_use_advanced_editor.click(function () {
 			if (this.checked) {
 				advanced_editor_init();
 				save_prefer_upload_type('advanced');
@@ -812,29 +817,29 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 
 		$(this)
 			.append($('<div class="row col-sm-12"/>')
-			.append($('<label class="col-sm-2 control-label"><div class="text-left">' + text + '</div></label>'))
-			.append($('<label class="col-sm-1 control-label" for="' + input_language_name + '">'+uojLocale('editor::language')+'</label>'))
-			.append($('<div class="col-sm-2"/>')
-				.append(input_language)
-			)
-			.append($('<div class="col-sm-2 offset-sm-3 radio"/>')
-				.append($('<label/>')
-					.append(input_upload_type_editor)
-					.append(' '+uojLocale('editor::upload by editor'))
+				.append($('<label class="col-sm-2 control-label"><div class="text-left">' + text + '</div></label>'))
+				.append($('<label class="col-sm-1 control-label" for="' + input_language_name + '">' + uojLocale('editor::language') + '</label>'))
+				.append($('<div class="col-sm-2"/>')
+					.append(input_language)
 				)
-			)
-			.append($('<div class="col-sm-2 radio"/>')
-				.append($('<label/>')
-					.append(input_upload_type_file)
-					.append(' '+uojLocale('editor::upload from local'))
+				.append($('<div class="col-sm-2 offset-sm-3 radio"/>')
+					.append($('<label/>')
+						.append(input_upload_type_editor)
+						.append(' ' + uojLocale('editor::upload by editor'))
+					)
 				)
-			))
+				.append($('<div class="col-sm-2 radio"/>')
+					.append($('<label/>')
+						.append(input_upload_type_file)
+						.append(' ' + uojLocale('editor::upload from local'))
+					)
+				))
 			.append(div_help_language)
 			.append(div_editor)
 			.append(div_file);
 
 		if (prefer_upload_type == 'advanced') {
-			var check_advanced_init = function() {
+			var check_advanced_init = function () {
 				if (div_editor.is(':visible')) {
 					advanced_editor_init();
 				} else {
@@ -847,8 +852,8 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 }
 
 // text file form group
-$.fn.text_file_form_group = function(name, text) {
-	return this.each(function() {
+$.fn.text_file_form_group = function (name, text) {
+	return this.each(function () {
 		var input_upload_type_name = name + '_upload_type';
 		var input_editor_id = 'input-' + name + '_editor';
 		var input_editor_name = name + '_editor';
@@ -882,9 +887,9 @@ $.fn.text_file_form_group = function(name, text) {
 				.append($('<div class="input-group"/>')
 					.append(input_file_path)
 					.append($('<div class="input-group-append"/>')
-						.append($('<button type="button" class="btn btn-primary">'+'<span class="glyphicon glyphicon-folder-open"></span> '+uojLocale('editor::browse')+'</button>')
+						.append($('<button type="button" class="btn btn-primary">' + '<span class="glyphicon glyphicon-folder-open"></span> ' + uojLocale('editor::browse') + '</button>')
 							.css('width', '100px')
-							.click(function() {
+							.click(function () {
 								input_file.click();
 							})
 						)
@@ -893,10 +898,10 @@ $.fn.text_file_form_group = function(name, text) {
 				.append($('<span class="help-block" id="' + help_file_id + '"></span>'))
 
 		var advanced_editor = null;
-		var advanced_editor_init = function() {
-			require_codemirror({}, function() {
+		var advanced_editor_init = function () {
+			require_codemirror({}, function () {
 				var mode = get_codemirror_mode('text');
-				require_codemirror_mode(mode, function() {
+				require_codemirror_mode(mode, function () {
 					if (advanced_editor != null) {
 						return;
 					}
@@ -910,7 +915,7 @@ $.fn.text_file_form_group = function(name, text) {
 						indentWithTabs: true,
 						theme: 'default'
 					});
-					advanced_editor.on('change', function() {
+					advanced_editor.on('change', function () {
 						advanced_editor.save();
 					});
 					$(advanced_editor.getWrapperElement()).css('box-shadow', '0 2px 10px rgba(0,0,0,0.2)');
@@ -919,7 +924,7 @@ $.fn.text_file_form_group = function(name, text) {
 			});
 		}
 
-		var save_prefer_upload_type = function(type) {
+		var save_prefer_upload_type = function (type) {
 			$.cookie('uoj_text_file_form_group_preferred_upload_type', type, { expires: 7, path: '/' });
 		};
 
@@ -941,20 +946,20 @@ $.fn.text_file_form_group = function(name, text) {
 			}
 		}
 
-		input_upload_type_editor.click(function() {
+		input_upload_type_editor.click(function () {
 			div_editor.show('fast');
 			div_file.hide('fast');
 			save_prefer_upload_type('editor');
 		});
-		input_upload_type_file.click(function() {
+		input_upload_type_file.click(function () {
 			div_file.show('fast');
 			div_editor.hide('fast');
 			save_prefer_upload_type('file');
 		});
-		input_file.change(function() {
+		input_file.change(function () {
 			input_file_path.val(input_file.val());
 		});
-		input_use_advanced_editor.click(function() {
+		input_use_advanced_editor.click(function () {
 			if (this.checked) {
 				advanced_editor_init();
 				save_prefer_upload_type('advanced');
@@ -970,25 +975,25 @@ $.fn.text_file_form_group = function(name, text) {
 
 		$(this)
 			.append($('<div class="row"/>')
-			.append($('<label class="col-sm-2 control-label"><div class="text-left">' + text + '</div></label>'))
-			.append($('<div class="top-buffer-sm" />'))
-			.append($('<div class="col-sm-2 offset-sm-6 radio"/>')
-				.append($('<label/>')
-					.append(input_upload_type_editor)
-					.append(' '+uojLocale('editor::upload by editor'))
+				.append($('<label class="col-sm-2 control-label"><div class="text-left">' + text + '</div></label>'))
+				.append($('<div class="top-buffer-sm" />'))
+				.append($('<div class="col-sm-2 offset-sm-6 radio"/>')
+					.append($('<label/>')
+						.append(input_upload_type_editor)
+						.append(' ' + uojLocale('editor::upload by editor'))
+					)
 				)
-			)
-			.append($('<div class="col-sm-2 radio"/>')
-				.append($('<label/>')
-					.append(input_upload_type_file)
-					.append(' '+uojLocale('editor::upload from local'))
-				)
-			))
+				.append($('<div class="col-sm-2 radio"/>')
+					.append($('<label/>')
+						.append(input_upload_type_file)
+						.append(' ' + uojLocale('editor::upload from local'))
+					)
+				))
 			.append(div_editor)
 			.append(div_file);
 
 		if (prefer_upload_type == 'advanced') {
-			var check_advanced_init = function() {
+			var check_advanced_init = function () {
 				if (div_editor.is(':visible')) {
 					advanced_editor_init();
 				} else {
@@ -1006,10 +1011,10 @@ function custom_test_onsubmit(response_text, div_result, url) {
 		$(div_result).html('<div class="text-danger">' + response_text + '</div>');
 		return;
 	}
-	var update = function() {
+	var update = function () {
 		var can_next = true;
 		$.get(url,
-			function(data) {
+			function (data) {
 				if (data.judged === undefined) {
 					$(div_result).html('<div class="text-danger">error</div>');
 				} else {
@@ -1026,30 +1031,30 @@ function custom_test_onsubmit(response_text, div_result, url) {
 					}
 				}
 			}, 'json')
-		.always(function() {
-			if (can_next) {
-				setTimeout(update, 500);
-			}
-		});
+			.always(function () {
+				if (can_next) {
+					setTimeout(update, 500);
+				}
+			});
 	};
 	setTimeout(update, 500);
 }
 
 // comment
 function showCommentReplies(id, replies) {
-	var toggleFormReply = function(from, text) {
+	var toggleFormReply = function (from, text) {
 		if (text == undefined) {
 			text = '';
 		}
-		
+
 		var p = '#comment-body-' + id;
 		var q = '#div-form-reply';
 		var r = '#input-reply_comment';
 		var t = '#input-reply_id';
 		if ($(q).data('from') != from) {
 			$(q).data('from', from);
-			$(q).hide('fast', function() {
-				$(this).appendTo(p).show('fast', function() {
+			$(q).hide('fast', function () {
+				$(this).appendTo(p).show('fast', function () {
 					$(t).val(id);
 					$(r).val(text).focus();
 				});
@@ -1058,29 +1063,29 @@ function showCommentReplies(id, replies) {
 		} else if ($(q).css('display') != 'none') {
 			$(q).appendTo(p).hide('fast');
 		} else {
-			$(q).appendTo(p).show('fast', function() {
+			$(q).appendTo(p).show('fast', function () {
 				$(t).val(id);
 				$(r).val(text).focus();
 			});
 		}
 	}
 
-	$('#reply-to-' + id).click(function(e) {
+	$('#reply-to-' + id).click(function (e) {
 		e.preventDefault();
 		toggleFormReply(id);
 	});
-	
+
 	if (replies.length == 0) {
 		return;
 	}
-	
+
 	$("#replies-" + id).long_table(
 		replies,
 		1,
 		'<tr>' +
-			'<th>评论回复</th>' +
+		'<th>评论回复</th>' +
 		'</tr>',
-		function(reply) {
+		function (reply) {
 			return $('<tr id="' + 'comment-' + reply.id + '" />').append(
 				$('<td />').append(
 					$('<div class="comtbox6">' + getUserLink(reply.poster, reply.poster_rating) + '：' + reply.content + '</div>')
@@ -1098,10 +1103,10 @@ function showCommentReplies(id, replies) {
 				)
 			).uoj_highlight();
 		}, {
-			table_classes: ['table', 'table-condensed'],
-			page_len: 5,
-			prevent_focus_on_click: true
-		}
+		table_classes: ['table', 'table-condensed'],
+		page_len: 5,
+		prevent_focus_on_click: true
+	}
 	);
 }
 
@@ -1111,14 +1116,14 @@ function showStandings() {
 		standings,
 		1,
 		'<tr>' +
-			'<th style="width:5em">#</th>' +
-			'<th style="width:14em">'+uojLocale('username')+'</th>' +
-			'<th style="width:5em">'+uojLocale('contests::total score')+'</th>' +
-			$.map(problems, function(col, idx) {
-				return '<th style="width:8em;">' + '<a href="/contest/' + contest_id + '/problem/' + col + '">' + String.fromCharCode('A'.charCodeAt(0) + idx) + '</a>' + '</th>';
-			}).join('') +
+		'<th style="width:5em">#</th>' +
+		'<th style="width:14em">' + uojLocale('username') + '</th>' +
+		'<th style="width:5em">' + uojLocale('contests::total score') + '</th>' +
+		$.map(problems, function (col, idx) {
+			return '<th style="width:8em;">' + '<a href="/contest/' + contest_id + '/problem/' + col + '">' + String.fromCharCode('A'.charCodeAt(0) + idx) + '</a>' + '</th>';
+		}).join('') +
 		'</tr>',
-		function(row) {
+		function (row) {
 			var col_tr = '<tr>';
 			col_tr += '<td>' + row[3] + '</td>';
 			col_tr += '<td>' + getUserLink(row[2][0], row[2][1]) + '</td>';
@@ -1141,11 +1146,11 @@ function showStandings() {
 			col_tr += '</tr>';
 			return col_tr;
 		}, {
-			table_classes: ['table', 'table-bordered', 'table-striped', 'table-text-center', 'table-vertical-middle', 'table-condensed'],
-			page_len: 100,
-			print_after_table: function() {
-				return '<div class="text-right text-muted">' + uojLocale("contests::n participants", standings.length) + '</div>';
-			}
+		table_classes: ['table', 'table-bordered', 'table-striped', 'table-text-center', 'table-vertical-middle', 'table-condensed'],
+		page_len: 100,
+		print_after_table: function () {
+			return '<div class="text-right text-muted">' + uojLocale("contests::n participants", standings.length) + '</div>';
 		}
+	}
 	);
 }
