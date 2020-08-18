@@ -53,7 +53,8 @@
 
 	function removeSolutionForm($blog_id) {
 		$res_form = new UOJForm("remove_solution_{$blog_id}");
-		$res_form->addHidden("blog_id", $blog_id, function($blog_id) {
+		$input_name = "blog_id_delete_{$blog_id}";
+		$res_form->addHidden($input_name, $blog_id, function($blog_id) {
 			global $myUser, $problem;
 			if (!hasProblemPermission($myUser, $problem)) {
 				$blog = queryBlog($blog_id);
@@ -65,10 +66,10 @@
 				}
 			}
 		}, null);
-		$res_form->handle = function() {
+		$res_form->handle = function() use ($input_name) {
 			global $myUser, $problem;
 
-			$blog_id = $_POST["blog_id"];
+			$blog_id = $_POST[$input_name];
 			DB::query("delete from problems_solutions where problem_id={$problem['id']} and blog_id={$blog_id}");
 			$blog = queryBlog($blog_id);
 
@@ -91,16 +92,17 @@ EOD;
 
 	function confirmSolutionForm($blog_id) {
 		$res_form = new UOJForm("confirm_solution_{$blog_id}");
-		$res_form->addHidden("blog_id", $blog_id, function($blog_id) {
+		$input_name = "blog_id_confirm_{$blog_id}";
+		$res_form->addHidden($input_name, $blog_id, function($blog_id) {
 			global $myUser, $problem;
 			if (!hasProblemPermission($myUser, $problem)) {
 				return '只有管理员可以审核题解';
 			}
 		}, null);
-		$res_form->handle = function() {
+		$res_form->handle = function() use ($input_name) {
 			global $myUser, $problem;
 
-			$blog_id = $_POST["blog_id"];
+			$blog_id = $_POST[$input_name];
 			DB::query("update problems_solutions set is_hidden = 0 where problem_id={$problem['id']} and blog_id={$blog_id}");
 			$blog = queryBlog($blog_id);
 

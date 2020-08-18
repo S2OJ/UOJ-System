@@ -144,12 +144,12 @@
 						$tail = '<strong style="color:red">' . ($change > 0 ? '+' : '') . $change . '</strong>';
 						$content = <<<EOD
 <p>${user_link} 您好：</p>
-<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后的Rating变化为${tail}，当前Rating为 <strong style="color:red">{$after_rating}</strong>。</p>
+<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后的 Rating 变化为 ${tail}，当前 Rating 为 <strong style="color:red">{$after_rating}</strong>。</p>
 EOD;
 					} else {
 						$content = <<<EOD
 <p>${user_link} 您好：</p>
-<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后Rating没有变化。当前Rating为 <strong style="color:red">{$after_rating}</strong>。</p>
+<p class="indent2">您在 <a href="/contest/{$contest['id']}">{$contest['name']}</a> 这场比赛后 Rating 没有变化。当前 Rating 为 <strong style="color:red">{$after_rating}</strong>。</p>
 EOD;
 					}
 					
