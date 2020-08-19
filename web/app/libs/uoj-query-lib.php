@@ -68,6 +68,9 @@ function queryProblemTags($id) {
 	}
 	return $tags;
 }
+function queryProblemList($id) {
+	return DB::selectFirst("select * from lists where id = $id", MYSQLI_ASSOC);
+}
 function queryProblemListTags($id) {
 	$tags = array();
 	$result = DB::query("select tag from lists_tags where list_id = $id order by id");

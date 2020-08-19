@@ -2,8 +2,14 @@
 	requirePHPLib('form');
 	requirePHPLib('judger');
 	requirePHPLib('data');
+
+	$list_id = $_GET['list_id'];
+	$list_mode = isset($list_id);
+	if ($list_mode) {
+		$list = queryProblemList($list_id);
+	}
 	
-	if (isSuperUser($myUser)) {
+	if (isSuperUser($myUser) && !$list_mode) {
 		$new_problem_form = new UOJForm('new_problem');
 		$new_problem_form->handle = function() {
 			DB::query("insert into problems (title, is_hidden, submission_requirement) values ('New Problem', 1, '{}')");
@@ -17,6 +23,42 @@
 		$new_problem_form->submit_button_config['smart_confirm'] = '';
 		
 		$new_problem_form->runAtServer();
+	}
+
+	if (isSuperUser($myUser) && $list_mode) {
+		$list_tags = queryProblemListTags($list_id);
+
+		$list_editor = new UOJBlogEditor();
+		$list_editor->name = 'list';
+		$list_editor->blog_url = null;
+		$list_editor->cur_data = array(
+			'title' => $list['title'],
+			'tags' => $list_tags,
+			'is_hidden' => $list['is_hidden']
+		);
+		$list_editor->label_text = array_merge($list_editor->label_text, array(
+			'view blog' => '保存题单信息',
+			'blog visibility' => '题单可见性'
+		));
+		$list_editor->show_editor = false;
+
+		$list_editor->save = function($data) {
+			global $list_id, $list;
+			DB::update("update lists set title = '".DB::escape($data['title'])."' where id = {$list_id}");
+
+			if ($data['tags'] !== $list_tags) {
+				DB::delete("delete from lists_tags where list_id = {$list_id}");
+				foreach ($data['tags'] as $tag) {
+					DB::insert("insert into lists_tags (list_id, tag) values ({$list_id}, '".DB::escape($tag)."')");
+				}
+			}
+
+			if ($data['is_hidden'] != $list['is_hidden'] ) {
+				DB::update("update lists set is_hidden = {$data['is_hidden']} where id = {$list_id}");
+			}
+		};
+
+		$list_editor->runAtServer();
 	}
 	
 	function echoProblem($problem) {
@@ -125,7 +167,13 @@ EOD;
 
 	$pag_config = array('page_len' => 100);
 	$pag_config['col_names'] = array('*');
-	$pag_config['table_name'] = "problems left join best_ac_submissions on best_ac_submissions.submitter = '{$myUser['username']}' and problems.id = best_ac_submissions.problem_id";
+
+	if (!$list_mode) {
+		$pag_config['table_name'] = "problems left join best_ac_submissions on best_ac_submissions.submitter = '{$myUser['username']}' and problems.id = best_ac_submissions.problem_id";
+	} else {
+		$pag_config['table_name'] = "problems left join best_ac_submissions on best_ac_submissions.submitter = '{$myUser['username']}' and problems.id = best_ac_submissions.problem_id inner join lists_problems lp on lp.list_id = {$list_id} and lp.problem_id = problems.id";
+	}
+
 	$pag_config['cond'] = $cond;
 	$pag_config['tail'] = "order by id asc";
 	$pag = new Paginator($pag_config);
@@ -134,9 +182,22 @@ EOD;
 	$table_classes = array('table', 'table-bordered', 'table-hover', 'table-striped');
 ?>
 <?php echoUOJPageHeader(UOJLocale::get('problems')) ?>
+<?php
+	if (isSuperUser($myUser) && $list_mode) {
+		echo '<h5>编辑题单信息</h5>';
+		echo '<div class="mb-4">';
+		$list_editor->printHTML();
+		echo '</div>';
+	}
+?>
 <div class="row">
 	<div class="col-sm-4">
+		<?php if (!$list_mode): ?>
 		<?= HTML::tablist($tabs_info, $cur_tab, 'nav-pills') ?>
+		<?php else: ?>
+		<h5>"<?= $list['title'] ?>" 中的题目: </h5>
+		<p>(题单 ID: #<?= $list['id'] ?>)</p>
+		<?php endif ?>
 	</div>
 	<div class="col-sm-4 order-sm-9 checkbox text-right">
 		<label class="checkbox-inline" for="input-show_tags_mode"><input type="checkbox" id="input-show_tags_mode" <?= isset($_COOKIE['show_tags_mode']) ? 'checked="checked" ': ''?>/> <?= UOJLocale::get('problems::show tags') ?></label>
@@ -150,17 +211,17 @@ EOD;
 <script type="text/javascript">
 $('#input-show_tags_mode').click(function() {
 	if (this.checked) {
-		$.cookie('show_tags_mode', '', {path: '/problems'});
+		$.cookie('show_tags_mode', '', {path: '/'});
 	} else {
-		$.removeCookie('show_tags_mode', {path: '/problems'});
+		$.removeCookie('show_tags_mode', {path: '/'});
 	}
 	location.reload();
 });
 $('#input-show_submit_mode').click(function() {
 	if (this.checked) {
-		$.cookie('show_submit_mode', '', {path: '/problems'});
+		$.cookie('show_submit_mode', '', {path: '/'});
 	} else {
-		$.removeCookie('show_submit_mode', {path: '/problems'});
+		$.removeCookie('show_submit_mode', {path: '/'});
 	}
 	location.reload();
 });
@@ -185,7 +246,7 @@ $('#input-show_submit_mode').click(function() {
 	echo '</table>';
 	echo '</div>';
 	
-	if (isSuperUser($myUser)) {
+	if (isSuperUser($myUser) && !$list_mode) {
 		$new_problem_form->printHTML();
 	}
 	

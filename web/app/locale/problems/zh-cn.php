@@ -1,7 +1,7 @@
 <?php
 return [
 	'problem' => '题目',
-	'problem list' => '题表',
+	'problem list' => '题单',
 	'all problems' => '总题库',
 	'template problems' => '模板题库',
 	'add new' => '添加新题',
