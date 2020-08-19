@@ -60,9 +60,73 @@
 
 		$list_editor->runAtServer();
 	}
-	
+
+	function removeFromProblemListForm($problem_id) {
+		$res_form = new UOJForm("remove_problem_{$problem_id}");
+		$input_name = "problem_id_delete_{$problem_id}";
+		$res_form->addHidden($input_name, $problem_id, function($problem_id) {
+			global $myUser;
+			if (!isSuperUser($myUser)) {
+				return '只有超级用户可以编辑题单';
+			}
+		}, null);
+		$res_form->handle = function() use ($input_name) {
+			global $list_id;
+			$problem_id = $_POST[$input_name];
+			DB::query("delete from lists_problems where problem_id={$problem_id} and list_id={$list_id}");
+		};
+		$res_form->submit_button_config['class_str'] = 'btn btn-danger';
+		$res_form->submit_button_config['text'] = '删除';
+		$res_form->submit_button_config['align'] = 'inline';
+		return $res_form;
+	}
+
+	$removeProblemForms = array();
+	if ($list_mode && isSuperUser($myUser)) {
+		$problem_ids = DB::query("select problem_id from lists_problems where list_id = {$list_id}");
+		while ($row = DB::fetch($problem_ids)) {
+			$problem_id = $row['problem_id'];
+			$removeForm = removeFromProblemListForm($problem_id);
+			$removeForm->runAtServer();
+			$removeProblemForms[$problem_id] = $removeForm;
+		}
+	}
+
+	if ($list_mode && isSuperUser($myUser)) {
+		$add_new_problem_form = new UOJForm('add_new_problem');
+		$add_new_problem_form->addInput('problem_id', 'text', '题目 ID', '', 
+			function ($x) {
+				global $myUser, $list_id;
+
+				if (!isSuperUser($myUser)) {
+					return '只有超级用户可以编辑题单';
+				}
+
+				if (!validateUInt($x)) return 'ID 不合法';
+				$problem = queryProblemBrief($x);
+				if (!$problem) return '题目不存在';
+
+				if (queryProblemInList($list_id, $x)) {
+					return '该题目已经在题单中';
+				}
+				
+				return '';
+			},
+			null
+		);
+		$add_new_problem_form->submit_button_config['text'] = '添加到题单';
+		$add_new_problem_form->handle = function() {
+			global $list_id, $myUser;
+			$problem_id = $_POST['problem_id'];
+
+			DB::insert("insert into lists_problems (list_id, problem_id) values ({$list_id}, {$problem_id})");
+		};
+		$add_new_problem_form->runAtServer();
+	}
+
 	function echoProblem($problem) {
-		global $myUser;
+		global $myUser, $removeProblemForms, $list_mode;
+
 		if (isProblemVisibleToUser($problem, $myUser)) {
 			echo '<tr class="text-center">';
 			if ($problem['submission_id']) {
@@ -72,6 +136,10 @@
 			}
 			echo '#', $problem['id'], '</td>';
 			echo '<td class="text-left">';
+			if ($list_mode && isSuperUser($myUser)) {
+				$form = $removeProblemForms[$problem['id']];
+				$form->printHTML();
+			}
 			if ($problem['is_hidden']) {
 				echo ' <span class="text-danger">[隐藏]</span> ';
 			}
@@ -251,5 +319,11 @@ $('#input-show_submit_mode').click(function() {
 	}
 	
 	echo $pag->pagination();
+?>
+<?php 
+	if ($list_mode && isSuperUser($myUser)) {
+		echo '<h5>添加题目到题单</h5>';
+		$add_new_problem_form->printHTML(); 
+	}
 ?>
 <?php echoUOJPageFooter() ?>

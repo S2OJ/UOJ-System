@@ -120,6 +120,9 @@ function queryBlog($id) {
 function querySolution($problem_id, $blog_id) {
 	return DB::selectFirst("select * from problems_solutions where blog_id='$blog_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
 }
+function queryProblemInList($list_id, $problem_id) {
+	return DB::selectFirst("select * from lists_problems where list_id='$blog_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
+}
 function queryBlogTags($id) {
 	$tags = array();
 	$result = DB::select("select tag from blogs_tags where blog_id = $id order by id");
