@@ -1,10 +1,13 @@
 <?php
 return [
 	'problem' => 'Problem',
+	'problem list' => 'Problem List',
 	'all problems' => 'All Problems',
 	'template problems' => 'Template Problems',
 	'add new' => 'Add new problem',
+	'add new list' => 'Add new problem list',
 	'title' => 'Title',
+	'total' => 'Total',
 	'ac' => 'AC',
 	'submit' => 'Submit',
 	'ac ratio' => 'AC Ratio',
@@ -14,6 +17,7 @@ return [
 	'custom test' => 'Custom Test',
 	'solutions' => 'Solutions',
 	'manage' => 'Manage',
+	'submissions statistics' => 'Submissions statistics',
 	'statistics' => 'Statistics',
 	'run' => 'Run',
 	'source code' => 'Source code',

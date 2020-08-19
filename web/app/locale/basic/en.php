@@ -10,6 +10,7 @@ return [
 	'system manage' => 'System Manage',
 	'contests' => 'Contests',
 	'problems' => 'Problems',
+	'problems lists' => 'Problems Lists',
 	'submissions' => 'Submissions',
 	'hacks' => 'Hack!',
 	'blogs' => 'Blogs',

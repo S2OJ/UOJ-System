@@ -34,8 +34,8 @@
 	<div class="col-md-3">
 		<?php if (UOJContext::hasBlogPermission()): ?>
 		<div class="btn-group d-flex">
-			<a href="<?=HTML::blog_url(UOJContext::userid(), '/post/new/write')?>" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> 写新博客</a>
-			<a href="<?=HTML::blog_url(UOJContext::userid(), '/slide/new/write')?>" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> 写新幻灯片</a>
+			<a href="<?=HTML::blog_url(UOJContext::userid(), '/post/new/write')?>" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i> 写新博客</a>
+			<a href="<?=HTML::blog_url(UOJContext::userid(), '/slide/new/write')?>" class="btn btn-primary"><i class="fa fa-pencil-square-o"></i> 写新幻灯片</a>
 		</div>
 		<?php endif ?>
 		<div class="card border-info top-buffer-sm">

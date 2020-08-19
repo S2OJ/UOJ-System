@@ -68,6 +68,21 @@ function queryProblemTags($id) {
 	}
 	return $tags;
 }
+function queryProblemList($id) {
+	return DB::selectFirst("select * from lists where id = $id", MYSQLI_ASSOC);
+}
+function queryProblemListTags($id) {
+	$tags = array();
+	$result = DB::query("select tag from lists_tags where list_id = $id order by id");
+	if (!$result) {
+		return $tags;
+	}
+	while ($row = DB::fetch($result, MYSQLI_NUM)) {
+		$tags[] = $row[0];
+	}
+	return $tags;
+}
+
 function queryContestProblemRank($contest, $problem) {
 	if (!DB::selectFirst("select * from contests_problems where contest_id = {$contest['id']} and problem_id = {$problem['id']}")) {
 		return null;
@@ -104,6 +119,9 @@ function queryBlog($id) {
 }
 function querySolution($problem_id, $blog_id) {
 	return DB::selectFirst("select * from problems_solutions where blog_id='$blog_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
+}
+function queryProblemInList($list_id, $problem_id) {
+	return DB::selectFirst("select * from lists_problems where list_id='$blog_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
 }
 function queryBlogTags($id) {
 	$tags = array();

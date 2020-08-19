@@ -5,18 +5,19 @@
 	</button>
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="nav navbar-nav mr-auto">
-			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/contests') ?>"><span class="glyphicon glyphicon-stats"></span> <?= UOJLocale::get('contests') ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/problems') ?>"><span class="glyphicon glyphicon-list-alt"></span> <?= UOJLocale::get('problems') ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/submissions') ?>"><span class="glyphicon glyphicon-tasks"></span> <?= UOJLocale::get('submissions') ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/hacks') ?>"><span class="glyphicon glyphicon-flag"></span> <?= UOJLocale::get('hacks') ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?= HTML::blog_list_url() ?>"><span class="glyphicon glyphicon-edit"></span> <?= UOJLocale::get('blogs') ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/faq') ?>"><span class="glyphicon glyphicon-info-sign"></span> <?= UOJLocale::get('help') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/contests') ?>"><i class="fa fa-futbol-o"></i> <?= UOJLocale::get('contests') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/problems') ?>"><i class="fa fa-globe"></i> <?= UOJLocale::get('problems') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/problem_lists') ?>"><i class="fa fa-list-alt"></i> <?= UOJLocale::get('problems lists') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/submissions') ?>"><i class="fa fa-desktop"></i> <?= UOJLocale::get('submissions') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/hacks') ?>"><i class="fa fa-exclamation-triangle"></i> <?= UOJLocale::get('hacks') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::blog_list_url() ?>"><i class="fa fa-pencil-square-o"></i> <?= UOJLocale::get('blogs') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/faq') ?>"><i class="fa fa-question-circle"></i> <?= UOJLocale::get('help') ?></a></li>
 		</ul>
 		<form id="form-search-problem" class="form-inline my-2 my-lg-0" method="get">
 			 <div class="input-group">
 				<input type="text" class="form-control" name="search" id="input-search" placeholder="<?= UOJLocale::get('search')?>" />  
 				<div class="input-group-append">
-					<button type="submit" class="btn btn-search btn-outline-primary" id="submit-search"><span class="glyphicon glyphicon-search"></span></button>
+					<button type="submit" class="btn btn-search btn-outline-primary" id="submit-search"><i class="fa fa-search"></i></button>
 				</div>
 			</div>
 		</form>

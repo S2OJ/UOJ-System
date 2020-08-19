@@ -43,9 +43,9 @@ EOD;
 		$mailer->msgHTML($html);
 		if (!$mailer->send()) {  
 			error_log($mailer->ErrorInfo);
-			becomeMsgPage('<div class="text-center"><h2>邮件发送失败，请重试 <span class="glyphicon glyphicon-remove"></span></h2></div>');
+			becomeMsgPage('<div class="text-center"><h2>邮件发送失败，请重试 <i class="fa fa-times"></i></h2></div>');
 		} else {
-			becomeMsgPage('<div class="text-center"><h2>邮件发送成功 <span class="glyphicon glyphicon-ok"></span></h2></div>');
+			becomeMsgPage('<div class="text-center"><h2>邮件发送成功 <i class="fa fa-check"></i></h2></div>');
 		}
 	};
 	$forgot_form->submit_button_config['align'] = 'offset';

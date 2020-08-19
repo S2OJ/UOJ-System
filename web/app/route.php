@@ -2,6 +2,7 @@
 
 Route::pattern('username', '[a-zA-Z0-9_]{1,20}');
 Route::pattern('id', '[1-9][0-9]{0,9}');
+Route::pattern('list_id', '[1-9][0-9]{0,9}');
 Route::pattern('contest_id', '[1-9][0-9]{0,9}');
 Route::pattern('tab', '\S{1,20}');
 Route::pattern('rand_str_id', '[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]{20}');
@@ -18,6 +19,8 @@ Route::group([
 		Route::any('/problem/{id}/manage/statement', '/problem_statement_manage.php');
 		Route::any('/problem/{id}/manage/managers', '/problem_managers_manage.php');
 		Route::any('/problem/{id}/manage/data', '/problem_data_manage.php');
+		Route::any('/problem_lists', '/problem_list.php');
+		Route::any('/problem_list/{list_id}', '/problem_set.php');
 		
 		Route::any('/contests', '/contests.php');
 		Route::any('/contest/new', '/add_contest.php');

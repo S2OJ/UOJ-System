@@ -27,7 +27,7 @@
 				<iframe class="embed-responsive-item" src="<?= HTML::blog_url(UOJContext::userid(), '/slide/'.$blog['id']) ?>"></iframe>
 			</div>
 			<div class="text-right top-buffer-sm">
-				<a class="btn btn-secondary btn-md" href="<?= HTML::blog_url(UOJContext::userid(), '/slide/'.$blog['id']) ?>"><span class="glyphicon glyphicon-fullscreen"></span> 全屏</a>
+				<a class="btn btn-secondary btn-md" href="<?= HTML::blog_url(UOJContext::userid(), '/slide/'.$blog['id']) ?>"><i class="fa fa-expand"></i> 全屏</a>
 			</div>
 		</article>
 		<?php endif ?>
