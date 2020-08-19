@@ -365,7 +365,7 @@ EOD;
 	<h1 class="col-md-7 text-center"><?= $problem_letter ?>. <?= $problem['title'] ?></h1>
 	<div class="col-md-2 text-right" id="contest-countdown"></div>
 </div>
-<a role="button" class="btn btn-info float-right" href="/contest/<?= $contest['id'] ?>/problem/<?= $problem['id'] ?>/statistics"><span class="glyphicon glyphicon-stats"></span> <?= UOJLocale::get('problems::statistics') ?></a>
+<a role="button" class="btn btn-info float-right" href="/contest/<?= $contest['id'] ?>/problem/<?= $problem['id'] ?>/statistics"><i class="fa fa-bar-chart"></i> <?= UOJLocale::get('problems::statistics') ?></a>
 <?php if ($contest['cur_progress'] <= CONTEST_IN_PROGRESS): ?>
 <script type="text/javascript">
 checkContestNotice(<?= $contest['id'] ?>, '<?= UOJTime::$time_now_str ?>');
@@ -374,20 +374,20 @@ $('#contest-countdown').countdown(<?= $contest['end_time']->getTimestamp() - UOJ
 <?php endif ?>
 <?php else: ?>
 <h1 class="page-header text-center">#<?= $problem['id']?>. <?= $problem['title'] ?></h1>
-<a role="button" class="btn btn-info float-right" href="/problem/<?= $problem['id'] ?>/statistics"><span class="glyphicon glyphicon-stats"></span> <?= UOJLocale::get('problems::statistics') ?></a>
+<a role="button" class="btn btn-info float-right" href="/problem/<?= $problem['id'] ?>/statistics"><i class="fa fa-bar-chart"></i> <?= UOJLocale::get('problems::statistics') ?></a>
 <?php endif ?>
 
 <ul class="nav nav-tabs" role="tablist">
-	<li class="nav-item"><a class="nav-link active" href="#tab-statement" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-book"></span> <?= UOJLocale::get('problems::statement') ?></a></li>
-	<li class="nav-item"><a class="nav-link" href="#tab-submit-answer" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-upload"></span> <?= UOJLocale::get('problems::submit') ?></a></li>
+	<li class="nav-item"><a class="nav-link active" href="#tab-statement" role="tab" data-toggle="tab"><i class="fa fa-book"></i> <?= UOJLocale::get('problems::statement') ?></a></li>
+	<li class="nav-item"><a class="nav-link" href="#tab-submit-answer" role="tab" data-toggle="tab"><i class="fa fa-upload"></i> <?= UOJLocale::get('problems::submit') ?></a></li>
 	<!-- <?php if ($custom_test_requirement): ?>
-	<li class="nav-item"><a class="nav-link" href="#tab-custom-test" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-console"></span> <?= UOJLocale::get('problems::custom test') ?></a></li>
+	<li class="nav-item"><a class="nav-link" href="#tab-custom-test" role="tab" data-toggle="tab"><i class="fa fa-code"></i> <?= UOJLocale::get('problems::custom test') ?></a></li>
 	<?php endif ?> -->
 	<?php if ($solution_viewable): ?>
-	<li class="nav-item"><a class="nav-link" href="#tab-solutions" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-edit"></span> <?= UOJLocale::get('problems::solutions') ?></a></li>
+	<li class="nav-item"><a class="nav-link" href="#tab-solutions" role="tab" data-toggle="tab"><i class="fa fa-pencil-square-o"></i> <?= UOJLocale::get('problems::solutions') ?></a></li>
 	<?php endif ?>
 	<?php if (hasProblemPermission($myUser, $problem)): ?>
-	<li class="nav-item"><a class="nav-link" href="/problem/<?= $problem['id'] ?>/manage/statement" role="tab"><span class="glyphicon glyphicon-wrench"></span> <?= UOJLocale::get('problems::manage') ?></a></li>
+	<li class="nav-item"><a class="nav-link" href="/problem/<?= $problem['id'] ?>/manage/statement" role="tab"><i class="fa fa-wrench"></i> <?= UOJLocale::get('problems::manage') ?></a></li>
 	<?php endif ?>
 	<?php if ($contest): ?>
 	<li class="nav-item"><a class="nav-link" href="/contest/<?= $contest['id'] ?>" role="tab"><?= UOJLocale::get('contests::back to the contest') ?></a></li>

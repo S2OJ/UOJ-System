@@ -337,11 +337,11 @@ $.fn.click_zan_block = function () {
 		}
 
 		var node = this;
-		var up_node = $('<a href="#" class="uoj-click-zan-up"><span class="glyphicon glyphicon-thumbs-up"></span>' + uojLocale('click-zan::good') + '</a>').click(function (e) {
+		var up_node = $('<a href="#" class="uoj-click-zan-up"><i class="fa fa-thumbs-up"></i>' + uojLocale('click-zan::good') + '</a>').click(function (e) {
 			e.preventDefault();
 			click_zan(id, type, 1, node);
 		});
-		var down_node = $('<a href="#" class="uoj-click-zan-down"><span class="glyphicon glyphicon-thumbs-down"></span>' + uojLocale('click-zan::bad') + '</a>').click(function (e) {
+		var down_node = $('<a href="#" class="uoj-click-zan-down"><i class="fa fa-thumbs-down"></i>' + uojLocale('click-zan::bad') + '</a>').click(function (e) {
 			e.preventDefault();
 			click_zan(id, type, -1, node);
 		});
@@ -572,18 +572,18 @@ $.fn.long_table = function (data, cur_page, header_row, get_row_str, config) {
 		if (n_pages > 1) {
 			var pagination = $('<ul class="pagination top-buffer-no bot-buffer-sm justify-content-center"></ul>');
 			if (cur_page > 1) {
-				pagination.append(get_page_li(cur_page - 1, '<span class="glyphicon glyphicon glyphicon-backward"></span>'));
+				pagination.append(get_page_li(cur_page - 1, '<i class="fa fa-chevron-left"></i>'));
 			} else {
-				pagination.append(get_page_li(-1, '<span class="glyphicon glyphicon glyphicon-backward"></span>'));
+				pagination.append(get_page_li(-1, '<i class="fa fa-chevron-left"></i>'));
 			}
 			var max_extend = config.max_extend != undefined ? config.max_extend : 5;
 			for (var i = Math.max(cur_page - max_extend, 1); i <= Math.min(cur_page + max_extend, n_pages); i++) {
 				pagination.append(get_page_li(i, i.toString()));
 			}
 			if (cur_page < n_pages) {
-				pagination.append(get_page_li(cur_page + 1, '<span class="glyphicon glyphicon glyphicon-forward"></span>'));
+				pagination.append(get_page_li(cur_page + 1, '<i class="fa fa-chevron-right"></i>'));
 			} else {
-				pagination.append(get_page_li(-1, '<span class="glyphicon glyphicon glyphicon-forward"></span>'));
+				pagination.append(get_page_li(-1, '<i class="fa fa-chevron-right"></i>'));
 			}
 			$(table_div).append($('<div class="text-center"></div>').append(pagination));
 		}
@@ -707,7 +707,7 @@ $.fn.source_code_form_group = function (name, text, langs_options_html) {
 				.append($('<div class="input-group"/>')
 					.append(input_file_path)
 					.append($('<span class="input-group-append"/>')
-						.append($('<button type="button" class="btn btn-primary">' + '<span class="glyphicon glyphicon-folder-open"></span> ' + uojLocale('editor::browse') + '</button>')
+						.append($('<button type="button" class="btn btn-primary">' + '<i class="fa fa-folder-open"></i> ' + uojLocale('editor::browse') + '</button>')
 							.css('width', '100px')
 							.click(function () {
 								input_file.click();
@@ -887,7 +887,7 @@ $.fn.text_file_form_group = function (name, text) {
 				.append($('<div class="input-group"/>')
 					.append(input_file_path)
 					.append($('<div class="input-group-append"/>')
-						.append($('<button type="button" class="btn btn-primary">' + '<span class="glyphicon glyphicon-folder-open"></span> ' + uojLocale('editor::browse') + '</button>')
+						.append($('<button type="button" class="btn btn-primary">' + '<i class="fa fa-folder-open"></i> ' + uojLocale('editor::browse') + '</button>')
 							.css('width', '100px')
 							.click(function () {
 								input_file.click();

@@ -1,0 +1,17 @@
+--2020-08-19 16:32:38--  https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.eot?
+正在解析主机 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)... 2001:4de0:ac19::1:b:1b, 2001:4de0:ac19::1:b:3b, 2001:4de0:ac19::1:b:3a, ...
+正在连接 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)|2001:4de0:ac19::1:b:1b|:443... 失败：网络不可达。
+正在连接 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)|2001:4de0:ac19::1:b:3b|:443... 失败：网络不可达。
+正在连接 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)|2001:4de0:ac19::1:b:3a|:443... 失败：网络不可达。
+正在连接 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)|2001:4de0:ac19::1:b:1a|:443... 失败：网络不可达。
+正在连接 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)|2001:4de0:ac19::1:b:2a|:443... 失败：网络不可达。
+正在连接 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)|2001:4de0:ac19::1:b:2b|:443... 失败：网络不可达。
+正在连接 stackpath.bootstrapcdn.com (stackpath.bootstrapcdn.com)|209.197.3.15|:443... 已连接。
+已发出 HTTP 请求，正在等待回应... 200 OK
+长度： 165742 (162K) [application/vnd.ms-fontobject]
+正在保存至: “fontawesome-webfont.eot?”
+
+fontawesome-webfont.eot?                               0%[                                                                                                                     ]       0  --.-KB/s               fontawesome-webfont.eot?                              14%[================>                                                                                                    ]  24.00K  95.5KB/s               fontawesome-webfont.eot?                              44%[===================================================>                                                                 ]  72.00K   149KB/s               fontawesome-webfont.eot?                             100%[====================================================================================================================>] 161.86K   239KB/s    用时 0.7s  
+
+2020-08-19 16:32:42 (239 KB/s) - 已保存 “fontawesome-webfont.eot?” [165742/165742])
+

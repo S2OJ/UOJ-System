@@ -143,7 +143,7 @@
 ?>
 <?php echoUOJPageHeader(HTML::stripTags($blog['title']) . ' - 博客') ?>
 <?php echoBlog($blog, array('show_title_only' => isset($_GET['page']) && $_GET['page'] != 1)) ?>
-<h2>评论 <span class="glyphicon glyphicon-comment"></span></h2>
+<h2>评论 <i class="fa fa-comment"></i></h2>
 <div class="list-group">
 <?php if ($comments_pag->isEmpty()): ?>
 	<div class="list-group-item text-muted">暂无评论</div>

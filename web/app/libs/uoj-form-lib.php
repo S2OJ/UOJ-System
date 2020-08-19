@@ -749,7 +749,7 @@ EOD;
 	<div class="input-group bot-buffer-md">
 		<input id="input-{$name}_path" class="form-control" type="text" readonly="readonly" />
 		<span class="input-group-append">
-			<button type="button" class="btn btn-primary" style="width:100px; !important" onclick="$('#input-{$name}').click();"><span class="glyphicon glyphicon-folder-open"></span> $browse_text</button>
+			<button type="button" class="btn btn-primary" style="width:100px; !important" onclick="$('#input-{$name}').click();"><i class="fa fa-folder-open"></i> $browse_text</button>
 		</span>
 	</div>
 	<span class="help-block" id="help-{$name}"></span>

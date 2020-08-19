@@ -76,9 +76,9 @@ class Paginator {
 		}
 		$html = '<ul class="pagination top-buffer-no bot-buffer-sm justify-content-center">';
 		if ($this->cur_page > 1) {
-			$html .= '<li class="page-item"><a class="page-link" href="'.$this->getPageUri($this->cur_page - 1).'"><span class="glyphicon glyphicon glyphicon-backward"></span></a></li>';
+			$html .= '<li class="page-item"><a class="page-link" href="'.$this->getPageUri($this->cur_page - 1).'"><i class="fa fa-chevron-left"></i></span></a></li>';
 		} else {
-			$html .= '<li class="page-item disabled"><a class="page-link"><span class="glyphicon glyphicon glyphicon-backward"></span></a></li>';
+			$html .= '<li class="page-item disabled"><a class="page-link"><i class="fa fa-chevron-left"></i></a></li>';
 		}
 			
 		for ($i = max($this->cur_page - $this->max_extend, 1); $i <= min($this->cur_page + $this->max_extend, $this->n_pages); $i++) {
@@ -89,9 +89,9 @@ class Paginator {
 			}
 		}
 		if ($this->cur_page < $this->n_pages) {
-			$html .= '<li class="page-item"><a class="page-link" href="'.$this->getPageUri($this->cur_page + 1).'"><span class="glyphicon glyphicon glyphicon-forward"></span></a></li>';
+			$html .= '<li class="page-item"><a class="page-link" href="'.$this->getPageUri($this->cur_page + 1).'"><i class="fa fa-chevron-right"></i></a></li>';
 		} else {
-			$html .= '<li class="page-item disabled"><a class="page-link"><span class="glyphicon glyphicon glyphicon-forward"></span></a></li>';
+			$html .= '<li class="page-item disabled"><a class="page-link"><i class="fa fa-chevron-right"></i></a></li>';
 		}
 		$html .= '</ul>';
 		return $html;

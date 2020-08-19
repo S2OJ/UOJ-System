@@ -230,10 +230,10 @@ pre {
 	margin-bottom: 30px;
 }
 
-.glyphicon-ok, .glyphicon-ok-sign {
+.fa-check {
 	color: green;
 }
-.glyphicon-remove, .glyphicon-remove-sign {
+.fa-times {
 	color: red;
 }
 

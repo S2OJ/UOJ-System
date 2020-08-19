@@ -18,9 +18,9 @@ function blog_editor_init(name, editor_config) {
 
 	// init buttons
 	var save_btn = $('<button type="button" class="btn btn-sm"></button>');
-	var preview_btn = $('<button type="button" class="btn btn-secondary btn-sm"><span class="glyphicon glyphicon-eye-open"></span></button>');
-	var bold_btn = $('<button type="button" class="btn btn-secondary btn-sm ml-2"><span class="glyphicon glyphicon-bold"></span></button>');
-	var italic_btn = $('<button type="button" class="btn btn-secondary btn-sm"><span class="glyphicon glyphicon-italic"></span></button>');
+	var preview_btn = $('<button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-eye"></i></button>');
+	var bold_btn = $('<button type="button" class="btn btn-secondary btn-sm ml-2"><i class="fa fa-bold"></i></button>');
+	var italic_btn = $('<button type="button" class="btn btn-secondary btn-sm"><i class="fa fa-italic"></i></button>');
 
 	save_btn.tooltip({ container: 'body', title: '保存 (Ctrl-S)' });
 	preview_btn.tooltip({ container: 'body', title: '预览 (Ctrl-D)' });
@@ -45,12 +45,12 @@ function blog_editor_init(name, editor_config) {
 		if (val) {
 			save_btn.removeClass('btn-warning');
 			save_btn.addClass('btn-success');
-			save_btn.html('<span class="glyphicon glyphicon-saved"></span>');
+			save_btn.html('<i class="fa fa-check"></i>');
 			before_window_unload_message = null;
 		} else {
 			save_btn.removeClass('btn-success');
 			save_btn.addClass('btn-warning');
-			save_btn.html('<span class="glyphicon glyphicon-save"></span>');
+			save_btn.html('<i class="fa fa-floppy-o"></i>');
 			before_window_unload_message = '您所编辑的内容尚未保存';
 		}
 	}

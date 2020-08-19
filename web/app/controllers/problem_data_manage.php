@@ -255,7 +255,7 @@ EOD
 					} elseif ($info['status'] == 'danger') {
 						echo '<tr class="text-danger">';
 						echo '<td>', htmlspecialchars($key), '</td>';
-						echo '<td>', htmlspecialchars($info['val']), ' <span class="glyphicon glyphicon-remove"></span>', '</td>';
+						echo '<td>', htmlspecialchars($info['val']), ' <i class="fa fa-times"></i></span>', '</td>';
 						echo '</tr>';
 					}
 				}
@@ -674,9 +674,9 @@ EOD
 	<div class="col-md-2 top-buffer-sm">
 		<div class="top-buffer-md">
 			<?php if ($problem['hackable']): ?>
-				<span class="glyphicon glyphicon-ok"></span> hack功能已启用
+				<i class="fa fa-check"></i> hack功能已启用
 			<?php else: ?>
-				<span class="glyphicon glyphicon-remove"></span> hack功能已禁止
+				<i class="fa fa-times"></i></span> hack功能已禁止
 			<?php endif ?>
 			<?php $hackable_form->printHTML() ?>
 		</div>

@@ -8,7 +8,7 @@
 			<div class="uoj-footer">
 				<!-- <div class="btn-group dropright mb-3">
 					<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-						<span class="glyphicon glyphicon-globe"></span> <?= UOJLocale::get('_common_name') ?>
+						<i class="fa fa-globe"></i> <?= UOJLocale::get('_common_name') ?>
 					</button>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="<?= HTML::url(UOJContext::requestURI(), array('params' => array('locale' => 'zh-cn'))) ?>">中文</a>

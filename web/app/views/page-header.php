@@ -43,8 +43,8 @@
 
 		<!-- Bootstrap core CSS -->
 		<?= HTML::css_link('/css/bootstrap.min.css?v=2019.5.31') ?>
-		<!-- Bootstrap Glyphicons CSS-->
-		<?= HTML::css_link('/css/bootstrap-glyphicons.min.css?v=2019.5.31') ?>
+		<!-- Font awesome CSS-->	
+		<?= HTML::css_link('/css/font-awesome.min.css') ?>
 
 		<!-- Custom styles for this template -->
 		<?= HTML::css_link('/css/uoj-theme.css?v=2.3333') ?>
