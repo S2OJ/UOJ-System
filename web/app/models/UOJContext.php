@@ -11,7 +11,7 @@ class UOJContext {
 		} else if (self::$data['type'] == 'blog') {
 			return array(
 				'PageNav' => 'blog-nav',
-				'PageMainTitle' => UOJContext::$data['user']['username'] . '的博客',
+				'PageMainTitle' => UOJContext::$data['user']['username'] . ' 的博客',
 				'PageMainTitleOnSmall' => '博客',
 			);
 		}

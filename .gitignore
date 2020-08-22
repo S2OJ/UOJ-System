@@ -1,6 +1,9 @@
 .*.swo
 .*.swp
 
+composer.phar
+composer.lock
+
 judger/uoj_judger/builtin/checker/*
 !judger/uoj_judger/builtin/checker/*.cpp
 judger/.conf.json
