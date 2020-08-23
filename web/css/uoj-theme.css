@@ -399,3 +399,36 @@ form.uoj-form-inline {
 td.success {
 	background-color: #99FF99;
 }
+
+form.uoj-form-compressed {
+	margin: 12px 0;
+}
+
+form.uoj-form-compressed div.form-group {
+	display: inline-block;
+	width: 24em;
+}
+
+form.uoj-form-compressed div.form-group label.col-sm-2 {
+	display: inline-block;
+	max-width: 100%;
+	width: 6em;
+	padding: 0;
+}
+
+form.uoj-form-compressed div.form-group div.col-sm-3  {
+	display: inline-block;
+	max-width: 100%;
+	width: 16em;
+}
+
+form.uoj-form-compressed div.text-center,
+form.uoj-form-compressed div.text-compressed,
+form.uoj-form-compressed button {
+	display: inline-block;
+}
+
+form.uoj-form-compressed button {
+	position: relative;
+	top: -6px;
+}

@@ -174,6 +174,11 @@
 			$REQUIRE_LIB['colorhelpers'] = "";
 		?>
 		<?php endif ?>
+
+		<?php if (isset($REQUIRE_LIB['jquery.query'])): ?>
+		<!-- ckeditor -->
+		<?= HTML::js_src('/js/jquery.query-object.js') ?>
+		<?php endif ?>
 		
 		<?php if (isset($REQUIRE_LIB['colorhelpers'])): ?>
 		<!-- colorhelpers -->
@@ -245,7 +250,9 @@
 					<li class="nav-item" role="presentation"><a class="nav-link" href="<?= HTML::url('/logout?_token='.crsf_token()) ?>"><?= UOJLocale::get('logout') ?></a></li>
 				<?php else: ?>
 					<li class="nav-item" role="presentation"><a class="nav-link" href="<?= HTML::url('/login') ?>"><?= UOJLocale::get('login') ?></a></li>
+					<?php if (!DB::selectCount("SELECT COUNT(*) FROM user_info")): ?>
 					<li class="nav-item" role="presentation"><a class="nav-link" href="<?= HTML::url('/register') ?>"><?= UOJLocale::get('register') ?></a></li>
+					<?php endif ?>
 				<?php endif ?>
 				</ul>
 				<h1 class="d-none d-sm-block" style="position: relative; top: 4px; width: 15em"><a href="<?= HTML::url('/') ?>"><img src="<?= HTML::url('/images/logo_small.png') ?>" alt="Logo" class="img-rounded" style="width:39px; height:39px; position: relative; top: -4px" /></a> <?= $PageMainTitle ?></h1>

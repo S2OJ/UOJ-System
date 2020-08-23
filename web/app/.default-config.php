@@ -1,8 +1,8 @@
 <?php
 return [
 	'profile' => [
-		'oj-name' => 'Universal Online Judge',
-		'oj-name-short' => 'UOJ',
+		'oj-name' => '石家庄二中在线评测系统',
+		'oj-name-short' => 'S2OJ',
 		'administrator' => 'root',
 		'admin-email' => 'admin@local_uoj.ac',
 		'QQ-group' => '',

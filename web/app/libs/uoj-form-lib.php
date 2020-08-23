@@ -395,6 +395,9 @@ EOD
 			if ($this->submit_button_config['align'] == 'inline') {
 				$form_class .= " uoj-form-inline";
 			}
+			if ($this->submit_button_config['align'] == 'compressed') {
+				$form_class .= " uoj-form-compressed";
+			}
 			echo '<form action="', $_SERVER['REQUEST_URI'], '" method="post" class="', $form_class, '" id="form-', $this->form_name, '"', $form_entype_str;
 
 			echo ' >';
