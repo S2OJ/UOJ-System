@@ -38,7 +38,8 @@
 				</table>
 			</div>
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<img class="media-object img-thumbnail" src="/images/logo.png" alt="Logo" />
+				<img class="media-object img-thumbnail" src="/images/blue.png" alt="Logo" style="width: 100%; height: 100%; padding: 10px; " />
+				<img class="media-object" src="/images/logo.png" style="width: auto; height: 106%; position: absolute; bottom: 11px; left: 0;" />
 			</div>
 		</div>
 	</div>
@@ -93,6 +94,16 @@ EOD;
 		<?php echoRanklist(array('echo_full' => '', 'top10' => '')) ?>
 		<div class="text-center">
 			<a href="/ranklist"><?= UOJLocale::get('view all') ?></a>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12 mt-4">
+		<h3><?= UOJLocale::get('top solver') ?></h3>
+		<?php echoRanklist(array('echo_full' => '', 'top10' => '', 'by_accepted' => '')) ?>
+		<div class="text-center">
+			<a href="/solverlist"><?= UOJLocale::get('view all') ?></a>
 		</div>
 	</div>
 </div>

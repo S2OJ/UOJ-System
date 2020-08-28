@@ -20,6 +20,7 @@ class UOJBlogEditor {
 	
 	public $validator = array();
 	public $show_editor = true;
+	public $show_tags = true;
 	
 	function __construct() {
 		global $REQUIRE_LIB;
@@ -79,7 +80,10 @@ class UOJBlogEditor {
 	}
 	private function receivePostData() {
 		$errors = array();
-		$keys = array('title', 'tags');
+		$keys = array('title');
+		if ($this->show_tags) {
+			$keys[] = 'tags';
+		}
 		if ($this->show_editor) {
 			$keys[] = 'content_md';
 		}

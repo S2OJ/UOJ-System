@@ -22,6 +22,9 @@ Route::group([
 		Route::any('/problem/{id}/manage/data', '/problem_data_manage.php');
 		Route::any('/problem_lists', '/problem_list.php');
 		Route::any('/problem_list/{list_id}', '/problem_set.php');
+
+		Route::any('/groups', '/group.php');
+		Route::any('/group/{id}', '/group_users.php');
 		
 		Route::any('/contests', '/contests.php');
 		Route::any('/contest/new', '/add_contest.php');
@@ -53,6 +56,7 @@ Route::group([
 		
 		Route::any('/faq', '/faq.php');
 		Route::any('/ranklist', '/ranklist.php?type=rating');
+		Route::any('/solverlist', '/ranklist.php?type=accepted');
 		
 		Route::any('/login', '/login.php');
 		Route::any('/logout', '/logout.php');

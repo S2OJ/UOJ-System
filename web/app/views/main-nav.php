@@ -6,8 +6,9 @@
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="nav navbar-nav mr-auto">
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/contests') ?>"><i class="fa fa-futbol-o"></i> <?= UOJLocale::get('contests') ?></a></li>
-			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/problems') ?>"><i class="fa fa-graduation-cap"></i> <?= UOJLocale::get('problems') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/problems') ?>"><i class="fa fa-folder-open"></i> <?= UOJLocale::get('problems') ?></a></li>
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/problem_lists') ?>"><i class="fa fa-list-alt"></i> <?= UOJLocale::get('problems lists') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/groups') ?>"><i class="fa fa-users"></i> <?= UOJLocale::get('groups') ?></a></li>
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/submissions') ?>"><i class="fa fa-desktop"></i> <?= UOJLocale::get('submissions') ?></a></li>
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/hacks') ?>"><i class="fa fa-exclamation-triangle"></i> <?= UOJLocale::get('hacks') ?></a></li>
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::blog_list_url() ?>"><i class="fa fa-pencil-square-o"></i> <?= UOJLocale::get('blogs') ?></a></li>

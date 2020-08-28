@@ -40,7 +40,8 @@ CREATE TABLE `best_ac_submissions` (
   `shortest_used_time` int(11) NOT NULL,
   `shortest_used_memory` int(11) NOT NULL,
   `shortest_tot_size` int(11) NOT NULL,
-  PRIMARY KEY (`problem_id`,`submitter`)
+  PRIMARY KEY (`problem_id`,`submitter`),
+  INDEX submitter_1 (`submitter`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -601,6 +602,34 @@ CREATE TABLE `lists_tags` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `groups`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` text NOT NULL,
+  `is_hidden` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `groups_users`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `groups_users` (
+  `group_id` int(11) NOT NULL,
+  `username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`group_id`, `username`),
+  INDEX username_1 (`username`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `search_requests`
 --
 
@@ -676,7 +705,7 @@ UNLOCK TABLES;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_info` (
   `usergroup` char(1) NOT NULL DEFAULT 'U',
-  `username` varchar(20) NOT NULL,
+  `username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` char(32) NOT NULL,
   `svn_password` char(10) NOT NULL,

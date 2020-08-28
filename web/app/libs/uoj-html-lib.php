@@ -931,13 +931,23 @@ function echoRanklist($config = array()) {
 	$header_row .= '<th style="width: 5em;">#</th>';
 	$header_row .= '<th style="width: 14em;">'.UOJLocale::get('username').'</th>';
 	$header_row .= '<th style="width: 50em;">'.UOJLocale::get('motto').'</th>';
-	$header_row .= '<th style="width: 5em;">'.UOJLocale::get('rating').'</th>';
+	if (!isset($config['by_accepted'])) {
+		$header_row .= '<th style="width: 5em;">'.UOJLocale::get('rating').'</th>';
+	} else {
+		$header_row .= '<th style="width: 5em;">'.UOJLocale::get('solved').'</th>';
+	}
 	$header_row .= '</tr>';
 	
 	$users = array();
-	$print_row = function($user, $now_cnt) use(&$users) {
+	$print_row = function($user, $now_cnt) use(&$users, $config) {
 		if (!$users) {
-			$rank = DB::selectCount("select count(*) from user_info where rating > {$user['rating']}") + 1;
+			if ($now_cnt == 1) {
+				$rank = 1;
+			} else if (!isset($config['by_accepted'])) {
+				$rank = DB::selectCount("select count(*) from user_info where rating > {$user['rating']}") + 1;
+			} else {
+				$rank = DB::selectCount("select count(*) from (select b.username as username, count(*) as accepted from best_ac_submissions a inner join user_info b on a.submitter = b.username group by username) as derived where accepted > {$user['rating']}") + 1;
+			}
 		} else if ($user['rating'] == $users[count($users) - 1]['rating']) {
 			$rank = $users[count($users) - 1]['rank'];
 		} else {
@@ -955,13 +965,34 @@ function echoRanklist($config = array()) {
 		
 		$users[] = $user;
 	};
-	$col_names = array('username', 'rating', 'motto');
-	$tail = 'order by rating desc, username asc';
+
+	if (!isset($config['by_accepted'])) {
+		$from = 'user_info';
+		$col_names = array('username', 'rating', 'motto');
+		$cond = '1';
+		$tail = 'order by rating desc, username asc';
+
+		if (isset($config['group_id'])) {
+			$group_id = $config['group_id'];
+			$from = "user_info a inner join groups_users b on (b.group_id = {$group_id} and a.username = b.username)";
+			$col_names = array('a.username as username', 'a.rating as rating', 'a.motto as motto');
+		}
+	} else {
+		$from = 'best_ac_submissions a inner join user_info b on a.submitter = b.username';
+		$col_names = array('b.username as username', 'count(*) as rating', 'b.motto as motto');
+		$cond = '1';
+		$tail = 'group by username order by rating desc, username asc';
+
+		if (isset($config['group_id'])) {
+			$group_id = $config['group_id'];
+			$from = "best_ac_submissions a inner join user_info b on a.submitter = b.username inner join groups_users c on (a.submitter = c.username and c.group_id = {$group_id})";
+		}
+	}
 	
 	if (isset($config['top10'])) {
 		$tail .= ' limit 10';
 	}
 	
 	$config['get_row_index'] = '';
-	echoLongTable($col_names, 'user_info', '1', $tail, $header_row, $print_row, $config);
+	echoLongTable($col_names, $from, $cond, $tail, $header_row, $print_row, $config);
 }

@@ -114,6 +114,7 @@
 			},
 			null
 		);
+		$add_new_problem_form->submit_button_config['align'] = 'compressed';
 		$add_new_problem_form->submit_button_config['text'] = '添加到题单';
 		$add_new_problem_form->handle = function() {
 			global $list_id, $myUser;
@@ -249,13 +250,25 @@ EOD;
 	$div_classes = array('table-responsive');
 	$table_classes = array('table', 'table-bordered', 'table-hover', 'table-striped');
 ?>
-<?php echoUOJPageHeader(UOJLocale::get('problems')) ?>
+<?php 
+	if ($list_mode) {
+		echoUOJPageHeader(UOJLocale::get('problems lists'));
+	} else {
+		echoUOJPageHeader(UOJLocale::get('problems'));
+	}
+?>
 <?php
 	if (isSuperUser($myUser) && $list_mode) {
 		echo '<h5>编辑题单信息</h5>';
 		echo '<div class="mb-4">';
 		$list_editor->printHTML();
 		echo '</div>';
+	}
+?>
+<?php 
+	if ($list_mode && isSuperUser($myUser)) {
+		echo '<h5>添加题目到题单</h5>';
+		$add_new_problem_form->printHTML(); 
 	}
 ?>
 <div class="row">
@@ -319,11 +332,5 @@ $('#input-show_submit_mode').click(function() {
 	}
 	
 	echo $pag->pagination();
-?>
-<?php 
-	if ($list_mode && isSuperUser($myUser)) {
-		echo '<h5>添加题目到题单</h5>';
-		$add_new_problem_form->printHTML(); 
-	}
 ?>
 <?php echoUOJPageFooter() ?>

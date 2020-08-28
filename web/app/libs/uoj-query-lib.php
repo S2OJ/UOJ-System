@@ -83,6 +83,10 @@ function queryProblemListTags($id) {
 	return $tags;
 }
 
+function queryGroup($id) {
+	return DB::selectFirst("select * from groups where id = $id", MYSQLI_ASSOC);
+}
+
 function queryContestProblemRank($contest, $problem) {
 	if (!DB::selectFirst("select * from contests_problems where contest_id = {$contest['id']} and problem_id = {$problem['id']}")) {
 		return null;
@@ -121,7 +125,10 @@ function querySolution($problem_id, $blog_id) {
 	return DB::selectFirst("select * from problems_solutions where blog_id='$blog_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
 }
 function queryProblemInList($list_id, $problem_id) {
-	return DB::selectFirst("select * from lists_problems where list_id='$blog_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
+	return DB::selectFirst("select * from lists_problems where list_id='$list_id' and problem_id='$problem_id'", MYSQLI_ASSOC);
+}
+function queryUserInGroup($group_id, $username) {
+	return DB::selectFirst("select * from groups_users where username='$username' and group_id='$group_id'", MYSQLI_ASSOC);
 }
 function queryBlogTags($id) {
 	$tags = array();
