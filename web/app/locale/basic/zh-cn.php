@@ -23,6 +23,7 @@ return [
 	'search' => '搜索',
 	'top rated' => 'Rating 排行榜',
 	'top solver' => 'AC 数排行榜',
+	'news' => '最新动态',
 	'username' => '用户名',
 	'password' => '密码',
 	'verification code' => '验证码',

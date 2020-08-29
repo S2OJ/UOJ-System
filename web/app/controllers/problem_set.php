@@ -213,29 +213,9 @@ EOD;
 			'url' => "/problems/template"
 		)
 	);
-	
-	/*
-	<?php
-	echoLongTable(array('*'),
-		"problems left join best_ac_submissions on best_ac_submissions.submitter = '{$myUser['username']}' and problems.id = best_ac_submissions.problem_id", $cond, 'order by id asc',
-		$header,
-		'echoProblem',
-		array('page_len' => 3,
-			'table_classes' => array('table', 'table-bordered', 'table-hover', 'table-striped'),
-			'print_after_table' => function() {
-				global $myUser;
-				if (isSuperUser($myUser)) {
-					global $new_problem_form;
-					$new_problem_form->printHTML();
-				}
-			},
-			'head_pagination' => true
-		)
-	);
-?>*/
 
 	$pag_config = array('page_len' => 100);
-	$pag_config['col_names'] = array('*');
+	$pag_config['col_names'] = array('best_ac_submissions.submission_id as submission_id', 'problems.id as id', 'problems.is_hidden as is_hidden', 'problems.title as title', 'problems.submit_num as submit_num', 'problems.ac_num as ac_num', 'problems.zan as zan');
 
 	if (!$list_mode) {
 		$pag_config['table_name'] = "problems left join best_ac_submissions on best_ac_submissions.submitter = '{$myUser['username']}' and problems.id = best_ac_submissions.problem_id";

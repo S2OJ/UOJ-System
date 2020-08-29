@@ -261,5 +261,50 @@
 			
 			<?php uojIncludeView($PageNav) ?>
 			<?php endif ?>
+
+			<?php
+			if (Auth::check()) {
+				$username = Auth::id();
+				$groups = queryGroupOfUser($username);
+				if (count($groups) > 0) {
+					$count = count($groups);
+					echo '<div class="card card-default" style="margin-bottom: 1rem;"><div class="card-body">';
+					echo '<p><b>您当前属于小组：</b>';
+					for ($i = 0; $i < $count; $i++) {
+						$group = $groups[$i];
+						$last = ($i == $count - 1);
+						echo "<a href=\"/group/{$group['id']}\">{$group['title']}</a>";
+						if (!$last) {
+							echo "、";
+						}
+					}
+					echo '</p>';
+
+					echo '<div class="marquee">';
+					echo '<div class="marquee-icon">';
+					echo '<i class="fa fa-bullhorn marquee-icon"></i>';
+					echo '<b>实时播报</b>';
+					echo '</div>';
+					echo '<div class="marquee-internel">';
+					echo '<div class="marquee-internel-2">';
+					echo '<p>';
+
+					$current_ac = queryGroupmateCurrentAC($username);
+					if (count($current_ac) == 0) {
+						echo '暂无最新动态';
+					} else {
+						foreach ($current_ac as $ac) {
+							echo '<span class="msg"><a href="/group/', $ac['group_id'], '">', $ac['group_name'], '</a> 的 ',
+							'<a href="/user/profile/', $ac['submitter'], '">', $ac['submitter'], '</a> 解决了问题 <a href="/problem/', $ac['problem_id'], '">', $ac['problem_title'], '</a>', '<span class="time">(', $ac['submit_time'] ,')</span></span>';
+						}
+					}
+
+					echo '</p>';
+					echo '</div></div></div>';
+
+					echo '</div></div>';
+				}
+			}
+			?>
 			
 			<div class="uoj-content">

@@ -117,16 +117,33 @@
 	}
 ?>
 
+<h2 style="margin-top: 24px"><?= $group['title'] ?></h2>
+<p>(<b>小组 ID</b>: <?= $group['id'] ?>)</p>
+
 <div class="row">
 	<div class="col-sm-12 mt-4">
-		<h3><?= UOJLocale::get('top rated') ?></h3>
+		<h5><?= UOJLocale::get('news') ?></h5>
+		<ul>
+		<?php
+			$current_ac = queryGroupCurrentAC($group['id']);
+			foreach ($current_ac as $ac) {
+				echo '<li><a href="/user/profile/', $ac['submitter'], '">', $ac['submitter'], '</a> 解决了问题 <a href="/problem/', $ac['problem_id'], '">', $ac['problem_title'], '</a>', ' <span class="time">(', $ac['submit_time'] ,')</span></li>';
+			}
+		?>
+		</ul>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12 mt-4">
+		<h5><?= UOJLocale::get('top rated') ?></h5>
 		<?php echoRanklist(array('echo_full' => '', 'group_id' => $group_id)) ?>
 	</div>
 </div>
 
 <div class="row">
 	<div class="col-sm-12 mt-4">
-		<h3><?= UOJLocale::get('top solver') ?></h3>
+		<h5><?= UOJLocale::get('top solver') ?></h5>
 		<?php echoRanklist(array('echo_full' => '', 'group_id' => $group_id, 'by_accepted' => '')) ?>
 	</div>
 </div>

@@ -684,6 +684,7 @@ CREATE TABLE `submissions` (
   `is_hidden` tinyint(1) NOT NULL,
   `status_details` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
+  INDEX submit_time_1 (`submit_time`),
   KEY `is_hidden` (`is_hidden`,`problem_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;

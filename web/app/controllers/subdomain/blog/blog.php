@@ -143,7 +143,7 @@
 ?>
 <?php echoUOJPageHeader(HTML::stripTags($blog['title']) . ' - 博客') ?>
 <?php echoBlog($blog, array('show_title_only' => isset($_GET['page']) && $_GET['page'] != 1)) ?>
-<h2>评论 <i class="fa fa-comment"></i></h2>
+<h5>评论 <i class="fa fa-comment"></i></h5>
 <div class="list-group">
 <?php if ($comments_pag->isEmpty()): ?>
 	<div class="list-group-item text-muted">暂无评论</div>
@@ -185,8 +185,8 @@
 </div>
 <?= $comments_pag->pagination() ?>
 
-<h3 class="mt-4">发表评论</h3>
-<p>可以用@mike来提到mike这个用户，mike会被高亮显示。如果你真的想打“@”这个字符，请用“@@”。</p>
+<h5 class="mt-4">发表评论</h5>
+<p>可以用 @mike 来提到 mike 这个用户，mike 会被高亮显示。如果你真的想打 “@” 这个字符，请用 “@@”。</p>
 <?php $comment_form->printHTML() ?>
 
 <div id="div-form-reply" style="display:none">

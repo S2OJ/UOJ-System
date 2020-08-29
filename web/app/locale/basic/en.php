@@ -23,6 +23,7 @@ return [
 	'search' => 'Search',
 	'top rated' => 'Top rated',
 	'top solver' => 'Top solver',
+	'news' => 'News',
 	'username' => 'Username',
 	'password' => 'Password',
 	'verification code' => 'Verification code',
