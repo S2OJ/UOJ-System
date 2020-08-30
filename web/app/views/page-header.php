@@ -283,7 +283,7 @@
 					echo '<div class="marquee">';
 					echo '<div class="marquee-icon">';
 					echo '<i class="fa fa-bullhorn marquee-icon"></i>';
-					echo '<b>实时播报</b>';
+					echo '<b>最新动态</b>';
 					echo '</div>';
 					echo '<div class="marquee-internel">';
 					echo '<div class="marquee-internel-2">';
