@@ -531,3 +531,14 @@ form.uoj-form-compressed button {
 		transform: translateX(-100%);
 	}
 }
+
+article table {
+    margin: 0 auto;
+}
+article table td, article table th {
+    border: 1px solid #bbb;
+    padding: 4px;
+}
+article table tbody tr:nth-child(odd) {
+    background-color: #eaeaea;
+}

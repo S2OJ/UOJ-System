@@ -7,7 +7,7 @@ composer.lock
 judger/uoj_judger/builtin/checker/*
 !judger/uoj_judger/builtin/checker/*.cpp
 judger/.conf.json
-judger/log/judge.log
+judger/log/*
 judger/judge_client
 judger/uoj_judger/builtin/judger/judger
 judger/uoj_judger/data
