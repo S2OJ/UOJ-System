@@ -1,5 +1,10 @@
 <?php
 	requirePHPLib('form');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
+
 	if (!validateUInt($_GET['id']) || !($contest = queryContest($_GET['id']))) {
 		become404Page();
 	}

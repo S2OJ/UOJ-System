@@ -2,6 +2,10 @@
 	requirePHPLib('form');
 	requirePHPLib('judger');
 	requirePHPLib('data');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
 	
 	if (!validateUInt($_GET['id']) || !($problem = queryProblemBrief($_GET['id']))) {
 		become404Page();

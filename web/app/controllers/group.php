@@ -3,6 +3,10 @@
     requirePHPLib('judger');
     requirePHPLib('data');
 
+    if (!isUser($myUser)) {
+		become403Page();
+	}
+
     if (isSuperUser($myUser)) {
 		$new_group_form = new UOJForm('new_group');
 		$new_group_form->handle = function() {

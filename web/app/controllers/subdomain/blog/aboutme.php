@@ -1,6 +1,12 @@
 <?php requirePHPLib('form') ?>
 <?php echoUOJPageHeader('关于我') ?>
 
+<?php
+    if (!isUser($myUser)) {
+		become403Page();
+	}
+?>
+
 <?php if (UOJContext::user()['username'] != 'vfleaking'): ?>
 <h3>博主是个超级大神犇！</h3>
 <?php else: ?>

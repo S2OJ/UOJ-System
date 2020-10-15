@@ -1,5 +1,9 @@
 <?php
 	requirePHPLib('form');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
 	
 	$upcoming_contest_name = null;
 	$upcoming_contest_href = null;

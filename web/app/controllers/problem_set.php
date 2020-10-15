@@ -3,6 +3,10 @@
 	requirePHPLib('judger');
 	requirePHPLib('data');
 
+	if (!isUser($myUser)) {
+		become403Page();
+	}
+
 	$list_id = $_GET['list_id'];
 	$list_mode = isset($list_id);
 	if ($list_mode) {

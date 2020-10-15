@@ -1,7 +1,11 @@
 <?php
     requirePHPLib('form');
 	requirePHPLib('judger');
-    requirePHPLib('data');
+	requirePHPLib('data');
+	
+	if (!isUser($myUser)) {
+		become403Page();
+	}
     
     $group_id = $_GET['id'];
     $group = queryGroup($group_id);

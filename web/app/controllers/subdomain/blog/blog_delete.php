@@ -1,5 +1,9 @@
 <?php
 	requirePHPLib('form');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
 	
 	if (!UOJContext::hasBlogPermission()) {
 		become403Page();

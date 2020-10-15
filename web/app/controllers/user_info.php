@@ -1,4 +1,8 @@
 <?php
+	if (!isUser($myUser)) {
+		become403Page();
+	}
+	
 	$username = $_GET['username'];
 	
 	requireLib('flot');

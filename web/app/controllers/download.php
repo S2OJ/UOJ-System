@@ -1,5 +1,10 @@
 <?php
 	requirePHPLib('judger');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
+
 	switch ($_GET['type']) {
 		case 'problem':
 			if (!validateUInt($_GET['id']) || !($problem = queryProblemBrief($_GET['id']))) {

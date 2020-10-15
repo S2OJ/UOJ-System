@@ -1,4 +1,8 @@
 <?php
+	if (!isUser($myUser)) {
+		become403Page();
+	}
+	
 	if (isset($_GET['type']) && $_GET['type'] == 'rating') {
 		$config = array('page_len' => 100);
 		$title = UOJLocale::get('top rated');

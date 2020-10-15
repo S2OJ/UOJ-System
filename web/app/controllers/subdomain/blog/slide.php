@@ -1,5 +1,9 @@
 <?php
 	requirePHPLib('form');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
 	
 	if (!isset($_GET['id']) || !validateUInt($_GET['id']) || !($blog = queryBlog($_GET['id'])) || !UOJContext::isHisSlide($blog)) {
 		become404Page();

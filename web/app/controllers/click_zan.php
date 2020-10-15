@@ -1,4 +1,8 @@
 <?php
+	if (!isUser($myUser)) {
+		become403Page();
+	}
+
 	function validateZan() {
 		if (!validateUInt($_POST['id']))
 			return false;
@@ -12,9 +16,6 @@
 	}
 	if (!validateZan()) {
 		die('<div class="text-danger">failed</div>');
-	}
-	if ($myUser == null) {
-		die('<div class="text-danger">please <a href="'.HTML::url('/login').'">log in</a></div>');
 	}
 	
 	$id = $_POST['id'];

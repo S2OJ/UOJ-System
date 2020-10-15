@@ -1,6 +1,10 @@
 <?php
 	requirePHPLib('form');
 	requirePHPLib('judger');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
 	
 	if (!validateUInt($_GET['id']) || !($submission = querySubmission($_GET['id']))) {
 		become404Page();

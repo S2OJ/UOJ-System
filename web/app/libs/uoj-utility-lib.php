@@ -129,6 +129,9 @@ function blog_name_decode($name) {
 	return $name;
 }
 
+function isUser($user) {
+	return $user != null;
+}
 function isSuperUser($user) {
 	return $user != null && $user['usergroup'] == 'S';
 }

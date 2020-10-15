@@ -1,5 +1,9 @@
 <?php
 	requirePHPLib('form');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
 	
 	$blogs_cond = "poster = '".UOJContext::userid()."'";
 	if (!UOJContext::hasBlogPermission()) {

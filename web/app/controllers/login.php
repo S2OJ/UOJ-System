@@ -141,7 +141,7 @@ function submitLoginPost() {
 			$('#div-username').addClass('has-error');
 			$('#help-username').html('用户名或密码错误。');
 			$('#div-password').addClass('has-error');
-			$('#help-password').html('用户名或密码错误。<a href="/forgot-password">忘记密码？</a>');
+			$('#help-password').html('用户名或密码错误。');
 			refreshCaptcha();
 		}
 	});

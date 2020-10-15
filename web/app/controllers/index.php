@@ -88,6 +88,7 @@ EOD;
 	}
 ?>
 
+<?php if (isUser($myUser)): ?>
 <div class="row">
 	<div class="col-sm-12 mt-4">
 		<h3><?= UOJLocale::get('top rated') ?></h3>
@@ -107,4 +108,6 @@ EOD;
 		</div>
 	</div>
 </div>
+<?php endif ?>
+
 <?php echoUOJPageFooter() ?>

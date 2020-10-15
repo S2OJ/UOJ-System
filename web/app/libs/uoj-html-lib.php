@@ -67,11 +67,11 @@ function becomeMsgPage($msg, $title = '消息') {
 }
 function become404Page() {
 	header($_SERVER['SERVER_PROTOCOL'] . " 404 Not Found", true, 404);
-	becomeMsgPage('<div class="text-center"><div style="font-size:233px">404</div><p>唔……未找到该页面……你是从哪里点进来的……&gt;_&lt;……</p></div>', '404');
+	becomeMsgPage('<div class="text-center"><div style="font-size:233px">404</div><p>未找到页面。</p></div>', '404');
 }
 function become403Page() {
 	header($_SERVER['SERVER_PROTOCOL'] . " 403 Forbidden", true, 403); 
-	becomeMsgPage('<div class="text-center"><div style="font-size:233px">403</div><p>禁止入内！ T_T</p></div>', '403');
+	becomeMsgPage('<div class="text-center"><div style="font-size:233px">403</div><p>访问被拒绝。您的会话可能已过期，需要重新登录。</p></div>', '403');
 }
 
 function getUserLink($username, $rating = null) {

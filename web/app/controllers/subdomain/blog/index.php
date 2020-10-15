@@ -1,4 +1,8 @@
 <?php
+	if (!isUser($myUser)) {
+		become403Page();
+	}
+	
 	$blogs_pag = new Paginator(array(
 		'col_names' => array('*'),
 		'table_name' => 'blogs',

@@ -1,5 +1,9 @@
 <?php
 	requirePHPLib('form');
+
+	if (!isUser($myUser)) {
+		become403Page();
+	}
 	
 	function echoBlogCell($blog) {
 		echo '<tr>';
