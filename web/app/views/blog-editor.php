@@ -18,7 +18,7 @@
 		<?php if ($editor->blog_url): ?>
 		<a id="a-<?= $editor->name ?>_view_blog" class="btn btn-info" href="<?= HTML::escape($editor->blog_url) ?>"><?= $editor->label_text['view blog'] ?></a>
 		<?php else: ?>
-		<a href="#" id="a-<?= $editor->name ?>_save" class="btn btn-info"><?= $editor->label_text['view blog'] ?></a>
+		<a id="a-<?= $editor->name ?>_view_blog" class="btn btn-info" href="<?= HTML::escape($editor->blog_url) ?>" style="display: none"><?= $editor->label_text['view blog'] ?></a>
 		<?php endif ?>
 	</div>
 	<div class="col-sm-6 text-right">

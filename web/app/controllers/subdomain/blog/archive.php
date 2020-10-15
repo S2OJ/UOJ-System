@@ -1,7 +1,7 @@
 <?php
 	requirePHPLib('form');
 	
-	$blogs_cond = "poster = '".UOJContext::userid()."' and is_draft = false";
+	$blogs_cond = "poster = '".UOJContext::userid()."'";
 	if (!UOJContext::hasBlogPermission()) {
 		$blogs_cond .= " and is_hidden = false";
 	}
