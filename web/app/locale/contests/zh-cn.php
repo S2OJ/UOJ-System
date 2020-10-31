@@ -2,6 +2,11 @@
 return [
 	'current or upcoming contests' => '正在进行或即将到来的比赛',
 	'ended contests' => '已结束的比赛',
+	'contest statistics' => '筛选比赛统计综合排名',
+	'included in stat' => '用于统计',
+	'stat' => '统计',
+	'select all' => '全选',
+	'unselect all' => '全不选',
 	'back to the contest' => '返回比赛',
 	'contest' => '比赛',
 	'contest name' => '比赛名称',

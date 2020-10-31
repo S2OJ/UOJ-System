@@ -120,13 +120,15 @@ function getColOfRating(rating) {
 	return ColorConverter.toStr(ColorConverter.toRGB(new HSV(300 - (rating - 850) * 300 / 1650, 30 + (rating - 850) * 70 / 1650, 50 + (rating - 850) * 50 / 1650)));
 }
 function getColOfScore(score) {
-	if (score == 0) {
-		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(0, 100, 80)));
+	let res = "";
+	if (score == 0 || isNaN(score)) {
+		res = ColorConverter.toStr(ColorConverter.toRGB(new HSV(0, 100, 80)));
 	} else if (score == 100) {
-		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(120, 100, 80)));
+		res = ColorConverter.toStr(ColorConverter.toRGB(new HSV(120, 100, 80)));
 	} else {
-		return ColorConverter.toStr(ColorConverter.toRGB(new HSV(30 + score * 60 / 100, 100, 90)));
+		res = ColorConverter.toStr(ColorConverter.toRGB(new HSV(30 + score * 60 / 100, 100, 90)));
 	}
+	return res;
 }
 
 function getUserLink(username, rating, addSymbol) {
@@ -1150,6 +1152,43 @@ function showStandings() {
 		page_len: 100,
 		print_after_table: function () {
 			return '<div class="text-right text-muted">' + uojLocale("contests::n participants", standings.length) + '</div>';
+		}
+	}
+	);
+}
+
+function showOverallStandings() {
+	$("#standings").long_table(
+		overall_standings,
+		1,
+		'<tr>' +
+		'<th style="width:5em">#</th>' +
+		'<th style="width:14em">' + uojLocale('username') + '</th>' +
+		'<th style="width:5em">' + uojLocale('contests::total score') + '</th>' +
+		$.map(contests, function (contest, idx) {
+			return '<th style="width:8em;">' + '<a href="/contest/' + contest['id'] + '/standings">' + contest['name'] + '</a>' + '</th>';
+		}).join('') +
+		'</tr>',
+		function (row) {
+			let col_tr = '<tr>';
+			col_tr += '<td>' + row['standing'] + '</td>';
+			col_tr += '<td>' + getUserLink(row['username'], row['rating']) + '</td>';
+			col_tr += '<td>' + '<div><span class="uoj-score" data-max="' + row['total']['problems'] * 100 + '" style="color:' + getColOfScore(row['total']['score'] / row['total']['problems']) + '">' + row['total']['score'] + '</span></div></td>';
+			for (var i = 0; i < contests.length; i++) {
+				col_tr += '<td>';
+				let col = row[i];
+				if (col) {
+					col_tr += '<div><span class="uoj-score" data-max="' + col['problems'] * 100 + '" style="color:' + getColOfScore(col['score'] / col['problems']) + '">' + col['score'] + '</a></div>';
+				}
+				col_tr += '</td>';
+			}
+			col_tr += '</tr>';
+			return col_tr;
+		}, {
+		table_classes: ['table', 'table-bordered', 'table-striped', 'table-text-center', 'table-vertical-middle', 'table-condensed'],
+		page_len: 100,
+		print_after_table: function () {
+			return '<div class="text-right text-muted">' + uojLocale("contests::n participants", overall_standings.length) + '</div>';
 		}
 	}
 	);

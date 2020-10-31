@@ -2,6 +2,11 @@
 return [
 	'current or upcoming contests' => 'Current or upcoming contests',
 	'ended contests' => 'Ended contests',
+	'contest statistics' => 'Filter contest for statistics',
+	'included in stat' => 'Included in stat',
+	'stat' => 'Stat',
+	'select all' => 'Select all',
+	'unselect all' => 'Unselect all',
 	'back to the contest' => 'Back to the contest',
 	'contest' => 'Contest',
 	'contest name' => 'Name',

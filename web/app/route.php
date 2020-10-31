@@ -37,6 +37,7 @@ Route::group([
 		Route::any('/contest/{id}/backstage', '/contest_inside.php?tab=backstage');
 		Route::any('/contest/{contest_id}/problem/{id}', '/problem.php');
 		Route::any('/contest/{contest_id}/problem/{id}/statistics', '/problem_statistics.php');
+		Route::any('/contest_overall_rank', '/contest_overall_rank.php');
 		
 		Route::any('/submissions', '/submissions_list.php');
 		Route::any('/submission/{id}', '/submission.php');
