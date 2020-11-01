@@ -302,6 +302,52 @@
 					echo '</p>';
 					echo '</div></div></div>';
 
+					$not_finished_problem = DB::selectAll("select min(a.deadline) as deadline, lp.problem_id as problem_id, p.title as problem_title from groups_users g inner join assignments a on g.group_id = a.group_id inner join lists li on a.list_id = li.id inner join lists_problems lp on li.id = lp.list_id inner join problems p on lp.problem_id = p.id left join best_ac_submissions b on b.submitter = g.username and b.problem_id = p.id where g.username = '{$username}' and b.submission_id is null group by lp.problem_id order by deadline asc", MYSQLI_ASSOC);
+
+					if (count($not_finished_problem) > 0) {
+						echo '<p style="margin-top: 1rem"><b>您还需要完成题目：</b></p>'; 
+						echo '<ul>';
+						foreach ($not_finished_problem as $row) {
+							$ddl = DateTime::createFromFormat('Y-m-d H:i:s', $row['deadline']);
+							$now = new DateTime();
+
+							echo '<li>';
+							echo '<a href="/problem/' . $row['problem_id'] . '">' . $row['problem_title'] . '</a>';
+							if ($ddl < $now) {
+								echo '<sup style="color:red">&nbsp;overdue</sup>';
+							} else if ($ddl->getTimestamp() - $now->getTimestamp() < 86400) {
+								echo '<sup style="color:red">&nbsp;soon</sup>';
+							}
+							$ddl_str = $ddl->format('Y-m-d H:i');
+							echo " (截止时间: {$ddl_str})";
+							echo '</li>';
+						}
+						echo '</ul>';
+					}
+
+					$not_finished_assignment = DB::selectAll("select a.list_id as list_id, a.id as assignment_id, a.deadline as deadline, li.title as title, count(*) as problem_count, count(b.submission_id) as accepted from groups_users g inner join assignments a on g.group_id = a.group_id inner join lists li on a.list_id = li.id inner join lists_problems lp on li.id = lp.list_id inner join problems p on lp.problem_id = p.id left join best_ac_submissions b on b.submitter = g.username and b.problem_id = p.id where g.username = '{$username}' group by a.id order by deadline asc", MYSQLI_ASSOC);
+
+					if (count($not_finished_assignment) > 0) {
+						echo '<p style="margin-top: 1rem"><b>对应下面作业：</b></p>'; 
+						echo '<ul>';
+						foreach ($not_finished_assignment as $row) {
+							$ddl = DateTime::createFromFormat('Y-m-d H:i:s', $row['deadline']);
+							$now = new DateTime();
+
+							echo '<li>';
+							echo '<a href="/problem_list/' . $row['list_id'] . '">' . $row['title'] . '</a>';
+							if ($ddl < $now) {
+								echo '<sup style="color:red">&nbsp;overdue</sup>';
+							} else if ($ddl->getTimestamp() - $now->getTimestamp() < 86400) {
+								echo '<sup style="color:red">&nbsp;soon</sup>';
+							}
+							$ddl_str = $ddl->format('Y-m-d H:i');
+							echo " (截止时间: {$ddl_str}，<a href=\"/assignment/{$row['assignment_id']}\">查看完成情况</a>)";
+							echo '</li>';
+						}
+						echo '</ul>';
+					}
+
 					echo '</div></div>';
 				}
 			}
