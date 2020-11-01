@@ -24,6 +24,7 @@ return [
 	'top rated' => 'Rating 排行榜',
 	'top solver' => 'AC 数排行榜',
 	'news' => '最新动态',
+	'assignments' => '作业',
 	'username' => '用户名',
 	'password' => '密码',
 	'verification code' => '验证码',

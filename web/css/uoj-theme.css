@@ -399,6 +399,9 @@ form.uoj-form-inline {
 td.success {
 	background-color: #99FF99;
 }
+td.failed {
+	background-color: #FF9999;
+}
 
 form.uoj-form-compressed {
 	margin: 12px 0;

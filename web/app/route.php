@@ -25,6 +25,8 @@ Route::group([
 
 		Route::any('/groups', '/group.php');
 		Route::any('/group/{id}', '/group_users.php');
+
+		Route::any('/assignment/{id}', '/assignment.php');
 		
 		Route::any('/contests', '/contests.php');
 		Route::any('/contest/new', '/add_contest.php');

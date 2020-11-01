@@ -24,6 +24,7 @@ return [
 	'top rated' => 'Top rated',
 	'top solver' => 'Top solver',
 	'news' => 'News',
+	'assignments' => 'Assignments',
 	'username' => 'Username',
 	'password' => 'Password',
 	'verification code' => 'Verification code',
