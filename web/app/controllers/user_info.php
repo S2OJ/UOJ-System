@@ -174,7 +174,7 @@ var rating_plot = $.plot($("#rating-plot"), [{
 	},
 	legend: {
 		labelFormatter: function(username) {
-			return getUserLink(username, <?= $user['rating'] ?>, false);
+			return getUserLink(username, <?= $user['rating'] ?>, <?= "\"{$user['realname']}\"" ?>, false);
 		}
 	},
 	grid: {
