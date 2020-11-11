@@ -295,7 +295,7 @@
 					} else {
 						foreach ($current_ac as $ac) {
 							echo '<span class="msg"><a href="/group/', $ac['group_id'], '">', $ac['group_name'], '</a> 的 ',
-							'<a href="/user/profile/', $ac['submitter'], '">', $ac['submitter'], '</a> 解决了问题 <a href="/problem/', $ac['problem_id'], '">', $ac['problem_title'], '</a>', '<span class="time">(', $ac['submit_time'] ,')</span></span>';
+							'<a href="/user/profile/', $ac['submitter'], '">', getUserName($ac['submitter'], $ac['realname']), '</a> 解决了问题 <a href="/problem/', $ac['problem_id'], '">', $ac['problem_title'], '</a>', '<span class="time">(', $ac['submit_time'] ,')</span></span>';
 						}
 					}
 

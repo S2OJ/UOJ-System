@@ -131,7 +131,7 @@ function getColOfScore(score) {
 	return res;
 }
 
-function getUserLink(username, rating, addSymbol) {
+function getUserLink(username, rating, realname, addSymbol) {
 	if (!username) {
 		return '';
 	}
@@ -141,6 +141,11 @@ function getUserLink(username, rating, addSymbol) {
 	var text = username;
 	if (username.charAt(0) == '@') {
 		username = username.substr(1);
+	}
+	if (realname !== undefined && realname !== null && realname !== "") {
+		text += " (";
+		text += realname;
+		text += ")";
 	}
 	if (addSymbol) {
 		if (rating >= 2500) {
@@ -153,7 +158,7 @@ function getUserLink(username, rating, addSymbol) {
 	}
 	return '<a class="uoj-username" href="' + uojHome + '/user/profile/' + username + '" style="color:' + getColOfRating(rating) + '">' + text + '</a>';
 }
-function getUserSpan(username, rating, addSymbol) {
+function getUserSpan(username, rating, realname, addSymbol) {
 	if (!username) {
 		return '';
 	}
@@ -163,6 +168,11 @@ function getUserSpan(username, rating, addSymbol) {
 	var text = username;
 	if (username.charAt(0) == '@') {
 		username = username.substr(1);
+	}
+	if (realname !== undefined && realname !== null && realname !== "") {
+		text += " (";
+		text += realname;
+		text += ")";
 	}
 	if (addSymbol) {
 		if (rating >= 2500) {
@@ -182,10 +192,11 @@ function replaceWithHighlightUsername() {
 	if (isNaN(rating)) {
 		return;
 	}
+	var realname = $(this).data("realname");
 	if ($(this).data("link") != 0) {
-		$(this).replaceWith(getUserLink(username, rating));
+		$(this).replaceWith(getUserLink(username, rating, realname));
 	} else {
-		$(this).replaceWith(getUserSpan(username, rating));
+		$(this).replaceWith(getUserSpan(username, rating, realname));
 	}
 }
 
@@ -195,6 +206,12 @@ $.fn.uoj_honor = function () {
 		var rating = $(this).data("rating");
 		if (isNaN(rating)) {
 			return;
+		}
+		var realname = $(this).data("realname");
+		if (realname !== undefined && realname !== null && realname !== "") {
+			honor += " (";
+			honor += realname;
+			honor += ")";
 		}
 		if (rating >= 2500) {
 			honor += '<sup>';
@@ -1090,7 +1107,7 @@ function showCommentReplies(id, replies) {
 		function (reply) {
 			return $('<tr id="' + 'comment-' + reply.id + '" />').append(
 				$('<td />').append(
-					$('<div class="comtbox6">' + getUserLink(reply.poster, reply.poster_rating) + '：' + reply.content + '</div>')
+					$('<div class="comtbox6">' + getUserLink(reply.poster, reply.poster_rating, reply.poster_realname) + '：' + reply.content + '</div>')
 				).append(
 					$('<ul class="text-right list-inline bot-buffer-no" />').append(
 						'<li>' + '<small class="text-muted">' + reply.post_time + '</small>' + '</li>'
@@ -1128,7 +1145,7 @@ function showStandings() {
 		function (row) {
 			var col_tr = '<tr>';
 			col_tr += '<td>' + row[3] + '</td>';
-			col_tr += '<td>' + getUserLink(row[2][0], row[2][1]) + '</td>';
+			col_tr += '<td>' + getUserLink(row[2][0], row[2][1], row[2][2]) + '</td>';
 			col_tr += '<td>' + '<div><span class="uoj-score" data-max="' + problems.length * 100 + '" style="color:' + getColOfScore(row[0] / problems.length) + '">' + row[0] + '</span></div>' + '<div>' + getPenaltyTimeStr(row[1]) + '</div></td>';
 			for (var i = 0; i < problems.length; i++) {
 				col_tr += '<td>';
@@ -1172,7 +1189,7 @@ function showOverallStandings() {
 		function (row) {
 			let col_tr = '<tr>';
 			col_tr += '<td>' + row['standing'] + '</td>';
-			col_tr += '<td>' + getUserLink(row['username'], row['rating']) + '</td>';
+			col_tr += '<td>' + getUserLink(row['username'], row['rating'], row['realname']) + '</td>';
 			col_tr += '<td>' + '<div><span class="uoj-score" data-max="' + row['total']['problems'] * 100 + '" style="color:' + getColOfScore(row['total']['score'] / row['total']['problems']) + '">' + row['total']['score'] + '</span></div></td>';
 			for (var i = 0; i < contests.length; i++) {
 				col_tr += '<td>';

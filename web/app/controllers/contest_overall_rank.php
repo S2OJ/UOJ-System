@@ -71,10 +71,13 @@
 
         $user = queryUser($username);
         $rating = 1500;
+        $realname = '';
         if ($user) {
             $rating = $user['rating'];
+            $realname = $user['realname'];
         }
         $arr['rating'] = $rating;
+        $arr['realname'] = $realname;
 
         $overall_standings[] = $arr;
     }

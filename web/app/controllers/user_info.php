@@ -35,7 +35,7 @@
 					<img class="media-object img-thumbnail d-block mx-auto" alt="<?= $user['username'] ?> Avatar" src="<?= HTML::avatar_addr($user, 256) ?>" />
 				</div>
 				<div class="col-md-8 order-md-1">
-					<h2><span class="uoj-honor" data-rating="<?= $user['rating'] ?>"><?= $user['username'] ?></span> <span><strong style="<?= $col_sex ?>"><?= $esc_sex ?></strong></span></h2>
+					<h2><span class="uoj-honor" data-rating="<?= $user['rating'] ?>" data-realname="<?= $user['realname'] ?>"><?= $user['username'] ?></span> <span><strong style="<?= $col_sex ?>"><?= $esc_sex ?></strong></span></h2>
 					<div class="list-group">
 						<div class="list-group-item">
 							<h4 class="list-group-item-heading"><?= UOJLocale::get('rating') ?></h4>
@@ -245,6 +245,7 @@ $("#rating-plot").bind("plotclick", function (event, pos, item) {
 		prev = -1;
 	}
 });
+
 </script>
 <?php else: ?>
 	<?php echoUOJPageHeader('不存在该用户' . ' - 用户信息') ?>

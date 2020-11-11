@@ -160,6 +160,7 @@
 		$replies = DB::selectAll("select id, poster, content, post_time from blogs_comments where reply_id = {$comment['id']} order by id");
 		foreach ($replies as $idx => $reply) {
 			$replies[$idx]['poster_rating'] = queryUser($reply['poster'])['rating'];
+			$replies[$idx]['poster_realname'] = queryUser($reply['poster'])['realname'];
 		}
 		$replies_json = json_encode($replies);
 	?>

@@ -79,10 +79,29 @@ function getUserLink($username, $rating = null) {
 		if ($rating == null) {
 			$rating = $user['rating'];
 		}
-		return '<span class="uoj-username" data-rating="'.$rating.'">'.$username.'</span>';
+		$realname = $user['realname'];
+		if ($realname == "") {
+			return '<span class="uoj-username" data-rating="'.$rating.'">'.$username.'</span>';
+		} else {
+			return '<span class="uoj-username" data-rating="'.$rating.'" data-realname="'.$realname.'">'.$username.'</span>';
+		}
 	} else {
 		$esc_username = HTML::escape($username);
 		return '<span>'.$esc_username.'</span>';
+	}
+}
+
+function getUserName($username, $realname = null) {
+	if ($realname == null) {
+		if (validateUsername($username) && ($user = queryUser($username))) {
+			$realname = $user['realname'];
+		}
+	}
+
+	if ($realname == "") {
+		return "$username";
+	} else {
+		return "$username ($realname)";
 	}
 }
 
@@ -929,8 +948,8 @@ function echoRanklist($config = array()) {
 	$header_row = '';
 	$header_row .= '<tr>';
 	$header_row .= '<th style="width: 5em;">#</th>';
-	$header_row .= '<th style="width: 14em;">'.UOJLocale::get('username').'</th>';
-	$header_row .= '<th style="width: 50em;">'.UOJLocale::get('motto').'</th>';
+	$header_row .= '<th style="width: 20em;">'.UOJLocale::get('username').'</th>';
+	$header_row .= '<th style="width: 44em;">'.UOJLocale::get('motto').'</th>';
 	if (!isset($config['by_accepted'])) {
 		$header_row .= '<th style="width: 5em;">'.UOJLocale::get('rating').'</th>';
 	} else {

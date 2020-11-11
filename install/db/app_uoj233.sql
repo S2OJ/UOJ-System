@@ -291,7 +291,7 @@ UNLOCK TABLES;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `contests_registrants` (
-  `username` varchar(20) NOT NULL,
+  `username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_rating` int(11) NOT NULL,
   `contest_id` int(11) NOT NULL,
   `has_participated` tinyint(1) NOT NULL,
@@ -723,6 +723,7 @@ UNLOCK TABLES;
 CREATE TABLE `user_info` (
   `usergroup` char(1) NOT NULL DEFAULT 'U',
   `username` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `realname` varchar(30) COLLATE  utf8mb4_unicode_ci NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` char(32) NOT NULL,
   `svn_password` char(10) NOT NULL,

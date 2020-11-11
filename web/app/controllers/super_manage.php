@@ -24,6 +24,12 @@
 		},
 		null
 	);
+	$register_form->addInput('new_realname', 'text', '真实姓名', '',
+		function ($new_realname) {
+			return '';
+		},
+		null
+	);
 	$register_form->addInput('new_password', 'password', '密码', '',
 		function ($new_password) {
 			return '';
@@ -32,12 +38,13 @@
 	);
 	$register_form->handle = function() {
 		$new_username = $_POST['new_username'];
+		$new_realname = $_POST['new_realname'];
 		$new_password = $_POST['new_password'];
 		$new_password = hash_hmac('md5', $new_password, getPasswordClientSalt());
 		$new_password = getPasswordToStore($new_password, $new_username);
 		$svn_pw = uojRandString(10);
 
-		DB::query("insert into user_info (username, password, svn_password, register_time, usergroup) values ('$new_username', '$new_password', '$svn_pw', now(), 'U')");
+		DB::query("insert into user_info (username, realname, password, svn_password, register_time, usergroup) values ('$new_username', '$new_realname', '$new_password', '$svn_pw', now(), 'U')");
 	};
 	$register_form->runAtServer();
 
@@ -70,6 +77,34 @@
 		DB::query("update user_info set password = '$p_password' where username = '$p_username'");
 	};
 	$change_password_form->runAtServer();
+
+	$change_realname_form = new UOJForm('change_realname');
+	$change_realname_form->submit_button_config['align'] = 'compressed';
+	$change_realname_form->addInput('r_username', 'text', '用户名', '',
+		function ($r_username) {
+			if (!validateUsername($r_username)) {
+				return '用户名不合法';
+			}
+			if (!queryUser($r_username)) {
+				return '用户不存在';
+			}
+			return '';
+		},
+		null
+	);
+	$change_realname_form->addInput('r_realname', 'text', '真实姓名', '',
+		function ($r_realname) {
+			return '';
+		},
+		null
+	);
+	$change_realname_form->handle = function() {
+		$r_username = $_POST['r_username'];
+		$r_realname = $_POST['r_realname'];
+
+		DB::query("update user_info set realname = '$r_realname' where username = '$r_username'");
+	};
+	$change_realname_form->runAtServer();
 	
 	$user_form = new UOJForm('user');
 	$user_form->submit_button_config['align'] = 'compressed';
@@ -331,7 +366,7 @@ EOD;
 EOD;
 	};
 	
-	$userlist_cols = array('username', 'usergroup', 'register_time');
+	$userlist_cols = array('username', 'usergroup', 'realname', 'register_time');
 	$userlist_config = array('page_len' => 20,
 			'table_classes' => array('table', 'table-bordered', 'table-hover', 'table-striped'));
 	$userlist_header_row = <<<EOD
@@ -421,6 +456,8 @@ EOD;
 			<?php $register_form->printHTML(); ?>
 			<h3>修改用户密码</h3>
 			<?php $change_password_form->printHTML(); ?>
+			<h3>修改用户真实姓名</h3>
+			<?php $change_realname_form->printHTML(); ?>
 			<h3>用户类别设置</h3>
 			<?php $user_form->printHTML(); ?>
 			<h3>用户名单</h3>

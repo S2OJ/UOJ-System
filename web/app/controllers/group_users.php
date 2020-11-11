@@ -212,7 +212,7 @@
 		<?php
 			$current_ac = queryGroupCurrentAC($group['id']);
 			foreach ($current_ac as $ac) {
-				echo '<li><a href="/user/profile/', $ac['submitter'], '">', $ac['submitter'], '</a> 解决了问题 <a href="/problem/', $ac['problem_id'], '">', $ac['problem_title'], '</a>', ' <span class="time">(', $ac['submit_time'] ,')</span></li>';
+				echo '<li><a href="/user/profile/', $ac['submitter'], '">', getUserName($ac['submitter'], $ac['realname']), '</a> 解决了问题 <a href="/problem/', $ac['problem_id'], '">', $ac['problem_title'], '</a>', ' <span class="time">(', $ac['submit_time'] ,')</span></li>';
 			}
 			if (count($current_ac) == 0) {
 				echo '<p>暂无最新动态</p>';
