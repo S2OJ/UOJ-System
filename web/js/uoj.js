@@ -290,8 +290,8 @@ function validateQQ(str) {
 	}
 }
 function validateMotto(str) {
-	if (str.length > 50) {
-		return '不能超过50字';
+	if (str.length > 1024) {
+		return '不能超过1024字';
 	} else {
 		return '';
 	}

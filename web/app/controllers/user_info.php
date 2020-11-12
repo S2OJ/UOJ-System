@@ -25,7 +25,7 @@
 			$esc_sex="";
 			$col_sex="color:black";
 		}
-		$esc_motto = HTML::escape($user['motto']);
+		$motto = addslashes($user['motto']);
 	?>
 	<div class="card border-info">
 		<h5 class="card-header bg-info"><?= UOJLocale::get('user profile') ?></h5>
@@ -51,7 +51,14 @@
 						</div>
 						<div class="list-group-item">
 							<h4 class="list-group-item-heading"><?= UOJLocale::get('motto') ?></h4>
-							<p class="list-group-item-text"><?= $esc_motto ?></p>
+							<?php
+								$motto_id = uniqid("motto-{$user['username']}-");
+								$dom_sanitize_config = DOM_SANITIZE_CONFIG;
+							?>
+							<p class="list-group-item-text" id="<?= $motto_id ?>"></p>
+							<script type="text/javascript">
+								$(function() { $('#<?= $motto_id ?>').html(DOMPurify.sanitize('<?= $motto ?>', <?= $dom_sanitize_config ?>)); });
+							</script>
 						</div>
 						<?php if (isSuperUser($myUser)): ?>
 						<div class="list-group-item">

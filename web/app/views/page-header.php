@@ -52,6 +52,9 @@
 		<!-- jQuery (necessary for Bootstrap\'s JavaScript plugins) -->
 		<?= HTML::js_src('/js/jquery.min.js') ?>
 		
+		<!-- DOM Santizer -->
+		<?= HTML::js_src('/js/purify.min.js') ?>
+		
 		<!-- jQuery autosize -->
 		<?= HTML::js_src('/js/jquery.autosize.min.js') ?>
 		<script type="text/javascript">
@@ -79,7 +82,7 @@
 		<?= HTML::js_src('/js/color-converter.min.js') ?>
 		
 		<!-- uoj -->
-		<?= HTML::js_src('/js/uoj.js?v=2017.01.01') ?>
+		<?= HTML::js_src('/js/uoj.js?v=2020.11.12.18') ?>
 		
 		<!-- readmore -->
 		<?= HTML::js_src('/js/readmore/readmore.min.js') ?>
