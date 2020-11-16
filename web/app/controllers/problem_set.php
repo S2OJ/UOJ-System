@@ -218,7 +218,7 @@ EOD;
 		)
 	);
 
-	$pag_config = array('page_len' => 100);
+	$pag_config = array('page_len' => 40);
 	$pag_config['col_names'] = array('best_ac_submissions.submission_id as submission_id', 'problems.id as id', 'problems.is_hidden as is_hidden', 'problems.title as title', 'problems.submit_num as submit_num', 'problems.ac_num as ac_num', 'problems.zan as zan');
 
 	if (!$list_mode) {
