@@ -263,6 +263,8 @@ const char *readable_file_name_list_default[] = {
 	"/dev/urandom",
 	"/proc/meminfo",
 	"/etc/localtime",
+	"/usr/share/locale/",
+	"/snap/bin/",
 	NULL
 };
 
