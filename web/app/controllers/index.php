@@ -38,8 +38,8 @@
 				</table>
 			</div>
 			<div class="col-xs-6 col-sm-4 col-md-3">
-				<img class="media-object img-thumbnail" src="/images/blue.png" alt="Logo" style="width: 100%; height: 100%; padding: 10px; " />
-				<img class="media-object" src="/images/logo.png" style="width: auto; height: 106%; position: absolute; bottom: 11px; left: 0;" />
+				<img class="media-object img-thumbnail" src="/images/juan.png" alt="Logo" style="width: 100%; height: 100%; padding: 10px; " />
+				<!-- <img class="media-object" src="/images/logo.png" style="width: auto; height: 106%; position: absolute; bottom: 11px; left: 0;" /> -->
 			</div>
 		</div>
 	</div>
