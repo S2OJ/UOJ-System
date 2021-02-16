@@ -91,7 +91,7 @@ EOD;
 
     echoLongTable(
         array('a.id as list_id', 'a.title as title', 'a.is_hidden as is_hidden', 'count(b.problem_id) as problem_count', 'count(c.submitter) as accepted'),
-		$from, $cond, 'group by a.id order by a.id asc',
+		$from, $cond, 'group by a.id order by a.id desc',
 		$header,
 		'echoList',
 		array('page_len' => 40,
