@@ -167,6 +167,14 @@
 				</td>
 EOD;
 			}
+			if (isset($_COOKIE['show_difficulty'])) {
+				$extra_config = getProblemExtraConfig($problem);
+				if ($extra_config['difficulty'] == 0) {
+					echo "<td></td>";
+				} else {
+					echo "<td>{$extra_config['difficulty']}</td>";
+				}
+			}
 			echo '<td class="text-left">', getClickZanBlock('P', $problem['id'], $problem['zan']), '</td>';
 			echo '</tr>';
 		}
@@ -204,6 +212,9 @@ EOD;
 		$header .= '<th class="text-center" style="width:5em;">'.UOJLocale::get('problems::submit').'</th>';
 		$header .= '<th class="text-center" style="width:150px;">'.UOJLocale::get('problems::ac ratio').'</th>';
 	}
+	if (isset($_COOKIE['show_difficulty'])) {
+		$header .= '<th class="text-center" style="width:7em;">'.UOJLocale::get('problems::difficulty').'</th>';
+	}
 	$header .= '<th class="text-center" style="width:180px;">'.UOJLocale::get('appraisal').'</th>';
 	$header .= '</tr>';
 	
@@ -219,7 +230,7 @@ EOD;
 	);
 
 	$pag_config = array('page_len' => 40);
-	$pag_config['col_names'] = array('best_ac_submissions.submission_id as submission_id', 'problems.id as id', 'problems.is_hidden as is_hidden', 'problems.title as title', 'problems.submit_num as submit_num', 'problems.ac_num as ac_num', 'problems.zan as zan');
+	$pag_config['col_names'] = array('best_ac_submissions.submission_id as submission_id', 'problems.id as id', 'problems.is_hidden as is_hidden', 'problems.title as title', 'problems.submit_num as submit_num', 'problems.ac_num as ac_num', 'problems.zan as zan', 'problems.extra_config as extra_config');
 
 	if (!$list_mode) {
 		$pag_config['table_name'] = "problems left join best_ac_submissions on best_ac_submissions.submitter = '{$myUser['username']}' and problems.id = best_ac_submissions.problem_id";
@@ -272,6 +283,7 @@ EOD;
 	<div class="col-sm-4 order-sm-9 checkbox text-right fine-tune-down">
 		<label class="checkbox-inline" for="input-show_tags_mode"><input type="checkbox" id="input-show_tags_mode" <?= isset($_COOKIE['show_tags_mode']) ? 'checked="checked" ': ''?>/> <?= UOJLocale::get('problems::show tags') ?></label>
 		<label class="checkbox-inline" for="input-show_submit_mode"><input type="checkbox" id="input-show_submit_mode" <?= isset($_COOKIE['show_submit_mode']) ? 'checked="checked" ': ''?>/> <?= UOJLocale::get('problems::show statistics') ?></label>
+		<label class="checkbox-inline" for="input-show_difficulty"><input type="checkbox" id="input-show_difficulty" <?= isset($_COOKIE['show_difficulty']) ? 'checked="checked" ': ''?>/> <?= UOJLocale::get('problems::show difficulty') ?></label>
 	</div>
 	<div class="col-sm-4 order-sm-5">
 	<?php echo $pag->pagination(); ?>
@@ -292,6 +304,14 @@ $('#input-show_submit_mode').click(function() {
 		$.cookie('show_submit_mode', '', {path: '/'});
 	} else {
 		$.removeCookie('show_submit_mode', {path: '/'});
+	}
+	location.reload();
+});
+$('#input-show_difficulty').click(function() {
+	if (this.checked) {
+		$.cookie('show_difficulty', '', {path: '/'});
+	} else {
+		$.removeCookie('show_difficulty', {path: '/'});
 	}
 	location.reload();
 });

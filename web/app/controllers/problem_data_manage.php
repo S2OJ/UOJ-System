@@ -510,6 +510,7 @@ EOD
 	$rejudgege97_form->submit_button_config['smart_confirm'] = '';
 	
 	$view_type_form = new UOJForm('view_type');
+	$view_type_form->submit_button_config['narrow'] = true;
 	$view_type_form->addVSelect('view_content_type',
 		array('NONE' => '禁止',
 				'SELF' => '仅自己',
@@ -553,6 +554,16 @@ EOD
 		'提交题解:',
 		$problem_extra_config['submit_solution_type']
 	);
+	$view_type_form->addInput(
+		'difficulty', 'text', '难度系数', $problem_extra_config['difficulty'],
+		function($str) {
+			if (!is_numeric($str)) {
+				return '难度系数必须是一个数字';
+			}
+			return '';
+		},
+		null
+	);
 	$view_type_form->handle = function() {
 		global $problem, $problem_extra_config;
 		$config = $problem_extra_config;
@@ -561,6 +572,7 @@ EOD
 		$config['view_details_type'] = $_POST['view_details_type'];
 		$config['view_solution_type'] = $_POST['view_solution_type'];
 		$config['submit_solution_type'] = $_POST['submit_solution_type'];
+		$config['difficulty'] = $_POST['difficulty'] + 0;
 		$esc_config = DB::escape(json_encode($config));
 		DB::query("update problems set extra_config = '$esc_config' where id = '{$problem['id']}'");
 	};
@@ -690,7 +702,7 @@ EOD
 		<?php endif ?>
 		</div>
 		<div class="top-buffer-md">
-			<button id="button-display_view_type" type="button" class="btn btn-primary btn-block" onclick="$('#div-view_type').toggle('fast');">可视权限</button>
+			<button id="button-display_view_type" type="button" class="btn btn-primary btn-block" onclick="$('#div-view_type').toggle('fast');">可视权限和其它配置</button>
 			<div class="top-buffer-sm" id="div-view_type" style="display:none; padding-left:5px; padding-right:5px;">
 				<?php $view_type_form->printHTML(); ?>
 			</div>
