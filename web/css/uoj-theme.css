@@ -396,6 +396,10 @@ form.uoj-form-inline {
 	margin-right: 0.3em;
 }
 
+form.form-horizontal {
+	margin-bottom: 8px;
+}
+
 td.success {
 	background-color: #99FF99;
 }
@@ -544,4 +548,8 @@ article table td, article table th {
 }
 article table tbody tr:nth-child(odd) {
     background-color: #eaeaea;
+}
+
+div.fine-tune-down {
+	padding-top: 8px;
 }

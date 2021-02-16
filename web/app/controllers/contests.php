@@ -50,6 +50,13 @@ EOD;
 	}
 ?>
 <?php echoUOJPageHeader(UOJLocale::get('contests')) ?>
+<?php
+	if (isSuperUser($myUser)) {
+		echo '<div class="text-right">';
+		echo '<a href="/contest/new" class="btn btn-primary" style="margin-top: .5rem">'.UOJLocale::get('contests::add new contest').'</a>';
+		echo '</div>';
+	}
+?>
 <h4><?= UOJLocale::get('contests::current or upcoming contests') ?></h4>
 <?php
 	$table_header = '';
@@ -62,7 +69,7 @@ EOD;
 	$table_header .= '</tr>';
 	echoLongTable(array('*'), 'contests', "status != 'finished'", 'order by id desc', $table_header,
 		"echoContest",
-		array('page_len' => 100)
+		array('page_len' => 40)
 	);
 
 	if ($rest_second <= 86400) {
@@ -89,11 +96,6 @@ EOD;
 		array('page_len' => 100,
 			'print_after_table' => function() {
 				global $myUser;
-				if (isSuperUser($myUser)) {
-					echo '<div class="text-right">';
-					echo '<a href="/contest/new" class="btn btn-primary">'.UOJLocale::get('contests::add new contest').'</a>';
-					echo '</div>';
-				}
 			}
 		)
 	);

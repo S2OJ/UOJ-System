@@ -42,6 +42,11 @@
 <?php echoUOJPageHeader(UOJLocale::get('groups')) ?>
 
 <?php
+    if (isSuperUser($myUser)) {
+        global $new_group_form;
+        $new_group_form->printHTML();
+    }
+
     $groups_caption = UOJLocale::get('groups');
     $users_caption = UOJLocale::get('users count');
     $header = <<<EOD
@@ -65,14 +70,10 @@ EOD;
 		$from, $cond, 'group by a.id order by a.id asc',
 		$header,
 		'echoGroup',
-		array('page_len' => 100,
+		array('page_len' => 40,
 			'table_classes' => array('table', 'table-bordered', 'table-hover', 'table-striped'),
 			'print_after_table' => function() {
 				global $myUser;
-				if (isSuperUser($myUser)) {
-					global $new_group_form;
-					$new_group_form->printHTML();
-				}
 			},
 			'head_pagination' => true
 		)

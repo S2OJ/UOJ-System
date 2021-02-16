@@ -242,6 +242,11 @@ EOD;
 	}
 ?>
 <?php
+	if (isSuperUser($myUser) && !$list_mode) {
+		$new_problem_form->printHTML();
+	}
+?>
+<?php
 	if (isSuperUser($myUser) && $list_mode) {
 		echo '<h5>编辑题单信息</h5>';
 		echo '<div class="mb-4">';
@@ -264,7 +269,7 @@ EOD;
 		<p>(题单 ID: #<?= $list['id'] ?>)</p>
 		<?php endif ?>
 	</div>
-	<div class="col-sm-4 order-sm-9 checkbox text-right">
+	<div class="col-sm-4 order-sm-9 checkbox text-right fine-tune-down">
 		<label class="checkbox-inline" for="input-show_tags_mode"><input type="checkbox" id="input-show_tags_mode" <?= isset($_COOKIE['show_tags_mode']) ? 'checked="checked" ': ''?>/> <?= UOJLocale::get('problems::show tags') ?></label>
 		<label class="checkbox-inline" for="input-show_submit_mode"><input type="checkbox" id="input-show_submit_mode" <?= isset($_COOKIE['show_submit_mode']) ? 'checked="checked" ': ''?>/> <?= UOJLocale::get('problems::show statistics') ?></label>
 	</div>
@@ -310,10 +315,6 @@ $('#input-show_submit_mode').click(function() {
 	echo '</tbody>';
 	echo '</table>';
 	echo '</div>';
-	
-	if (isSuperUser($myUser) && !$list_mode) {
-		$new_problem_form->printHTML();
-	}
 	
 	echo $pag->pagination();
 ?>

@@ -51,6 +51,11 @@
 <?php echoUOJPageHeader(UOJLocale::get('problems lists')) ?>
 
 <?php
+    if (isSuperUser($myUser)) {
+        global $new_list_form;
+        $new_list_form->printHTML();
+    }
+
     $problem_list_caption = UOJLocale::get('problems::problem list');
     $ac_caption = UOJLocale::get('problems::ac');
     $total_caption = UOJLocale::get('problems::total');
@@ -89,14 +94,10 @@ EOD;
 		$from, $cond, 'group by a.id order by a.id asc',
 		$header,
 		'echoList',
-		array('page_len' => 100,
+		array('page_len' => 40,
 			'table_classes' => array('table', 'table-bordered', 'table-hover', 'table-striped'),
 			'print_after_table' => function() {
 				global $myUser;
-				if (isSuperUser($myUser)) {
-					global $new_list_form;
-					$new_list_form->printHTML();
-				}
 			},
 			'head_pagination' => true
 		)
