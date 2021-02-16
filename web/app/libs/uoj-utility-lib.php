@@ -142,8 +142,8 @@ function getProblemExtraConfig($problem) {
 		'view_content_type' => 'ALL',
 		'view_all_details_type' => 'ALL',
 		'view_details_type' => 'ALL',
-		'view_solution_type' => 'NONE',
-		'submit_solution_type' => 'NONE'
+		'view_solution_type' => 'ALL',
+		'submit_solution_type' => 'ALL_AFTER_AC'
 	);
 	
 	mergeConfig($extra_config, $default_extra_config);
