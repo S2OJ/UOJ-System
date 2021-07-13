@@ -54,6 +54,9 @@
 		
 		<!-- DOM Santizer -->
 		<?= HTML::js_src('/js/purify.min.js') ?>
+
+		<!-- Service Worker -->
+		<?= HTML::js_src('/js/sw.js') ?>
 		
 		<!-- jQuery autosize -->
 		<?= HTML::js_src('/js/jquery.autosize.min.js') ?>
