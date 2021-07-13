@@ -4,10 +4,10 @@
  * @description For more information about this script, please visit https://blog.baoshuo.ren/post/workbox-service-worker/ .
 */
 
-importScripts('https://cdn.jsdelivr.net/npm/workbox-cdn@5.1.3/workbox/workbox-sw.js');
+importScripts('/js/workbox-v6.1.5/workbox-sw.js');
 
 workbox.setConfig({
-    modulePathPrefix: 'https://cdn.jsdelivr.net/npm/workbox-cdn@5.1.3/workbox/'
+    modulePathPrefix: '/js/workbox-v6.1.5/'
 });
 
 const { core, precaching, routing, strategies, expiration, cacheableResponse, backgroundSync } = workbox;
