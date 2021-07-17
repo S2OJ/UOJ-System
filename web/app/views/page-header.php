@@ -56,7 +56,13 @@
 		<?= HTML::js_src('/js/purify.min.js') ?>
 
 		<!-- Service Worker -->
-		<?= HTML::js_src('/js/sw.js') ?>
+		<script>
+			if (navigator.serviceWorker) {
+				window.addEventListener('load', function (event) {
+					navigator.serviceWorker.register('/js/sw.js');
+				});
+			}
+		</script>
 		
 		<!-- jQuery autosize -->
 		<?= HTML::js_src('/js/jquery.autosize.min.js') ?>
