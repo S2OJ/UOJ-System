@@ -275,7 +275,7 @@
 			<?php endif ?>
 
 			<?php
-			if (Auth::check()) {
+			if (Auth::check() && !$_GET["hide_group"]) {
 				$username = Auth::id();
 				$groups = queryGroupOfUser($username);
 				if (count($groups) > 0) {
