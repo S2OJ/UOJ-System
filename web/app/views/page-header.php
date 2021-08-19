@@ -280,7 +280,7 @@
 				$groups = queryGroupOfUser($username);
 				if (count($groups) > 0) {
 					$count = count($groups);
-					echo '<div class="card card-default" style="margin-bottom: 1rem;"><div class="card-body">';
+					echo '<div id="user-group" class="card card-default" style="margin-bottom: 1rem;"><div class="card-body">';
 					echo '<p><b>您当前属于小组：</b>';
 					for ($i = 0; $i < $count; $i++) {
 						$group = $groups[$i];
