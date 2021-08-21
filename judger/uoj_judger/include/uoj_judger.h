@@ -1144,7 +1144,7 @@ RunCompilerResult compile_pas(const string &name, const string &path = work_path
 }
 RunCompilerResult compile_cpp(const string &name, const string &path = work_path) {
 	return run_compiler(path.c_str(),
-			"/usr/bin/g++", "-o", name.c_str(), "-x", "c++", (name + ".code").c_str(), "-lm", "-O2", "-DONLINE_JUDGE", NULL);
+			"/usr/bin/g++", "-o", name.c_str(), "-x", "c++", (name + ".code").c_str(), "-lm", "-O2", "-DONLINE_JUDGE", "-std=c++98", NULL);
 }
 RunCompilerResult compile_cpp11(const string &name, const string &path = work_path) {
 	return run_compiler(path.c_str(),
@@ -1241,7 +1241,7 @@ RunCompilerResult compile_pas_with_implementer(const string &name, const string 
 }
 RunCompilerResult compile_cpp_with_implementer(const string &name, const string &path = work_path) {
 	return run_compiler(path.c_str(),
-			"/usr/bin/g++", "-o", name.c_str(), "implementer.cpp", "-x", "c++", (name + ".code").c_str(), "-lm", "-O2", "-DONLINE_JUDGE", NULL);
+			"/usr/bin/g++", "-o", name.c_str(), "implementer.cpp", "-x", "c++", (name + ".code").c_str(), "-lm", "-O2", "-DONLINE_JUDGE", "-std=c++98", NULL);
 }
 RunCompilerResult compile_cpp11_with_implementer(const string &name, const string &path = work_path) {
 	return run_compiler(path.c_str(),
