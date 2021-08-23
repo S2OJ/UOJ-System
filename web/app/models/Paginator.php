@@ -79,6 +79,7 @@ class Paginator {
 			return '';
 		}
 		$html = '<ul class="pagination top-buffer-no bot-buffer-sm justify-content-center">';
+		$html .= '<li class="page-item"><a class="page-link" href="'.$this->getPageUri(1).'"><i class="fa fa-chevron-double-left"><<</i></a></li>';
 		if ($this->cur_page > 1) {
 			$html .= '<li class="page-item"><a class="page-link" href="'.$this->getPageUri($this->cur_page - 1).'"><i class="fa fa-chevron-left"></i></span></a></li>';
 		} else {
@@ -97,6 +98,7 @@ class Paginator {
 		} else {
 			$html .= '<li class="page-item disabled"><a class="page-link"><i class="fa fa-chevron-right"></i></a></li>';
 		}
+		$html .= '<li class="page-item"><a class="page-link" href="'.$this->getPageUri($this->n_pages).'"><i class="fa fa-chevron-double-right">>></i></a></li>';
 		$html .= '</ul>';
 		return $html;
 	}

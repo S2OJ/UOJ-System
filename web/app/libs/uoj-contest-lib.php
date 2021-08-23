@@ -133,7 +133,7 @@ function updateContestPlayerNum($contest) {
 // problems: pos => id
 // data    : id, submit_time, submitter, problem_pos, score
 // people  : username, user_rating
-function queryContestData($contest, $config = array()) {
+function queryContestData($contest, $config = array(), $is_after_contest_query = false) {
 	mergeConfig($config, [
 		'pre_final' => false
 	]);
@@ -141,6 +141,8 @@ function queryContestData($contest, $config = array()) {
 	$problems = [];
 	$prob_pos = [];
 	$n_problems = 0;
+
+	// 获取比赛题目的problem_id
 	$result = DB::query("select problem_id from contests_problems where contest_id = {$contest['id']} order by problem_id");
 	while ($row = DB::fetch($result, MYSQLI_NUM)) {
 		$prob_pos[$problems[] = (int)$row[0]] = $n_problems++;
@@ -165,8 +167,22 @@ function queryContestData($contest, $config = array()) {
 			$result = DB::query("select id, submit_time, submitter, problem_id, score from submissions"
 				." where contest_id = {$contest['id']} and score is not null order by id");
 		} else {
-			$result = DB::query("select submission_id, date_add('{$contest['start_time_str']}', interval penalty second),"
-				." submitter, problem_id, score from contests_submissions where contest_id = {$contest['id']}");
+
+			// NEW CODE BEGIN
+
+			if($is_after_contest_query == true) {
+				// 下面这一行可以查询赛后排行榜
+				
+                // $result = DB::query("select id, submit_time, submitter, problem_id, score from submissions");
+                // 这玩意就可以分数优先了
+                $result = DB::query("select id, submit_time, submitter, problem_id, score from submissions order by score");
+			} else {
+				// 查询比赛排行榜
+				$result = DB::query("select submission_id, date_add('{$contest['start_time_str']}', interval penalty second),"
+					." submitter, problem_id, score from contests_submissions where contest_id = {$contest['id']}");
+			}
+
+			// NEW CODE END
 		}
 		while ($row = DB::fetch($result, MYSQLI_NUM)) {
 			$row[0] = (int)$row[0];
@@ -249,4 +265,43 @@ function calcStandings($contest, $contest_data, &$score, &$standings, $update_co
 			$standings[$i][] = $standings[$i - 1][3];
 		}
 	}
+}
+
+// -----------------------------------------------------------------------------------------
+
+function nek_insert_predict_score($nek_contest_id, $nek_username, $nek_score) {
+    // 小心 $nek_username 和 $nek_score 出现sql注入
+    DB::insert("insert into nek_predict_score (nek_contest_id, nek_username, nek_score) values ($nek_contest_id, '$nek_username', '$nek_score')");
+}
+
+function nek_update_predict_score($nek_contest_id, $nek_username, $nek_score) {
+    // 小心 $nek_username 和 $nek_score 出现sql注入
+    // echo "update nek_predict_score set nek_score = '$nek_score' where nek_username = '$nek_username'";
+    DB::update("update nek_predict_score set nek_score = '$nek_score' where nek_username = '$nek_username' and nek_contest_id=$nek_contest_id");
+}
+
+function nek_read_predict_score($nek_contest_id) {
+    $ret = array();
+    // return $ret;
+    // echo "select nek_username, nek_score from nek_predict_score where nek_contest_id = $nek_contest_id order by nek_id";
+	$result = DB::query("select nek_username, nek_score from nek_predict_score where nek_contest_id = $nek_contest_id order by nek_id");
+	if (!$result) {
+		return $ret;
+	}
+	while ($row = DB::fetch($result, MYSQLI_NUM)) {
+		$ret[] = $row;
+	}
+	return $ret;
+}
+
+function nek_read_predict_score_self($nek_contest_id, $nek_username) {
+    $ret = array();
+	$result = DB::query("select nek_score from nek_predict_score where nek_contest_id = $nek_contest_id and nek_username = '$nek_username' order by nek_id");
+	if (!$result) {
+		return $ret;
+	}
+	while ($row = DB::fetch($result, MYSQLI_NUM)) {
+		$ret[] = $row[0];
+	}
+	return $ret;
 }

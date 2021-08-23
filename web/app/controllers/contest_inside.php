@@ -1,6 +1,7 @@
 <?php
 	requirePHPLib('form');
-	
+
+ 
 	if (!isUser($myUser)) {
 		become403Page();
 	}
@@ -8,6 +9,7 @@
 	if (!validateUInt($_GET['id']) || !($contest = queryContest($_GET['id']))) {
 		become404Page();
 	}
+ 
 	genMoreContestInfo($contest);
 
 	if (!hasContestPermission(Auth::user(), $contest)) {
@@ -20,7 +22,51 @@
 			}
 		}
 	}
+
+    
+
+  
+if(isset($_GET["nek_psc_key"]) && isset($_GET['nek_usr_name']) && isset($_GET["nek_psc_val"]) && $contest['cur_progress'] == CONTEST_IN_PROGRESS) {
+   $nek_psc_key = (int) ($_GET["nek_psc_key"]);
+   $nek_psc_val = (int) ($_GET["nek_psc_val"]);
+   // echo $nek_psc_key . " " . $nek_psc_val;
+   $username = $myUser["username"];
+   $contest_id = $contest['id'];
+   
+   // var_dump($contest_id);
+   
+   if($username != $_GET['nek_usr_name'] || $nek_psc_val > 100 || $nek_psc_val < 0 || $nek_psc_key > 5 || $nek_psc_key < 0) {
+     echo "0";
+     exit(0);
+   }
+   
+   // echo "$username  $contest_id";
+   // exit(0);
+   $ret = nek_read_predict_score_self($contest_id, $username);
+   
+   // 此人还未有预估分数
+   if($ret == []) {
+     // acm最多也就6个题……
+     // echo "!@#"; exit(0);
+     nek_insert_predict_score($contest_id, $username, "0,0,0,0,0,0");
+     $ret = nek_read_predict_score_self($contest_id, $username);
+   }
+   // echo "ASD"; exit(0);
+   
+   
+   // 表中已有此人
+   // echo ($ret[0]); exit(0);
+   // var_dump(explode(',', $ret[0])); exit(0);
+   $ret = explode(',', $ret[0]);
+   $ret[$nek_psc_key] = $nek_psc_val;
+   // echo join(",", $ret); exit(0);
+   nek_update_predict_score($contest_id, $username, join(",", $ret));
+   echo $nek_psc_val;
+   exit(0);
+}
 	
+ 
+ 
 	if (isset($_GET['tab'])) {
 		$cur_tab = $_GET['tab'];
 	} else {
@@ -39,7 +85,15 @@
 		'standings' => array(
 			'name' => UOJLocale::get('contests::contest standings'),
 			'url' => "/contest/{$contest['id']}/standings"
-		)
+		),
+		'after_sub' => array(
+			'name' => '赛后排行榜',
+			'url' => "/contest/{$contest['id']}/standings?after_sub=1"
+		),
+        'standing_download' => array(
+            'name' => '导出排行榜',
+            'url' => 'javascript:tableToExcel()'
+        )
 	);
 	
 	if (hasContestPermission(Auth::user(), $contest)) {
@@ -400,10 +454,14 @@ EOD;
 		}
 	}
 	
-	function echoStandings() {
+	function echoStandings($is_after_contest_query = false) {
 		global $contest;
 		
-		$contest_data = queryContestData($contest);
+		// NEW CODE BEGIN
+		// $contest_data = queryContestData($contest);
+		$contest_data = queryContestData($contest, array(), $is_after_contest_query);
+		// NEW CODE END
+
 		calcStandings($contest, $contest_data, $score, $standings);
 		
 		uojIncludeView('contest-standings', [
@@ -412,6 +470,167 @@ EOD;
 			'score' => $score,
 			'contest_data' => $contest_data
 		]);
+    
+?>
+<script>
+$(document).ready(function() {
+	window.show_predict_score = function(username, scores) {
+		// scores = [A-score, B-score, C-score, ...]
+	    
+        window.nek_tr = null;
+        
+        $(`td > .uoj-username:contains('${username}')`).map(function(){
+	       if ($(this).text().replace(/ \(.*\)/,"") == `${username}`) {
+             window.nek_tr = $(this).parent().parent();
+           }
+   		 });
+         
+        let tr = window.nek_tr;
+        
+        if(!tr) {
+          return ;
+        }
+        
+        let tot_score = 0;
+        let pro_cnt = tr.children().length - 3;	
+        
+        if(scores.length == 0) {
+          scores = [0, 0, 0, 0, 0, 0];
+        }
+        // console.log(scores);
+        // console.log(scores.length);
+    
+        
+        if(scores[0] == -1) {
+          tot_score = 0;
+          // console.log("totscore = " + tot_score);
+          for(let i = 1 ; i <= pro_cnt ; ++ i) {
+             // console.log("tot = " + tot_score);  
+		 	 let tmp = parseInt(tr.find(`td:nth-child(${3 + i}) > div:nth-child(1) > span`).text().replace("(", "").replace(")", ""), 10);
+             if(isNaN(tmp)) {
+               tmp = 0;
+             }
+             tot_score += tmp;
+             // console.log("tots——subcore = " + tot_score);
+		  }
+         // console.log("totscore = " + tot_score);
+         
+          tr.find("td:nth-child(3) > div:nth-child(1) > span > span").text(`(${tot_score})`);
+          return ;
+        }
+		
+        for(let i = 1 ; i <= pro_cnt ; ++ i) {
+			let sco = scores[i - 1];
+			tr.find(`td:nth-child(${3 + i}) > div:nth-child(1) > a`).after(`<span class='uoj-score' data-max='100' style='color:grey'>(${sco})</span>`);
+		}
+    
+        tot_score = scores.reduce(function(a, b) {
+						    return parseInt(a, 10) + parseInt(b, 10);
+						});
+		 
+		tr.find("td:nth-child(3) > div:nth-child(1) > span").append(`<span class='uoj-score' data-max='100' style='color:grey'>(${tot_score})</span>`);
+    
+	};
+	// show_predict_score("nekko_test_test", [1,2,3]);
+});
+</script>
+<?php
+    
+        if($is_after_contest_query == false) {
+            global $myUser;
+            $username = $myUser["username"];
+            // echo ($contest["id"]);
+            // nek_write_predict_score($contest["id"], 'nekko_test', "12,13,14");
+            // nek_write_predict_score($contest["id"], $username, "5,6,7");
+            
+            // DEBUG
+            //  $username = "nekko_test_test";
+            // END DEBUG
+            
+            // 如果比赛还未结束，则只显示自己的预估分数
+            // 管理员可以查看所有人的预估成绩
+            if($contest['cur_progress'] <= CONTEST_IN_PROGRESS && !isSuperUser($myUser)) {
+              $ret = nek_read_predict_score_self($contest["id"], $username);
+              if($ret == []) {
+                nek_insert_predict_score($contest["id"], $username, "0,0,0,0,0,0");
+                $ret = nek_read_predict_score_self($contest["id"], $username);
+              }
+              ?>
+                  <script>
+                    $(document).ready(function() {
+                      show_predict_score('<?php echo $username; ?>', [<?php echo $ret[0]; ?>]);
+                    });
+                  </script>
+              <?php
+              // echo $ret[0];
+              // exit(0);
+            }
+            // 如果比赛已经结束，则显示所有人的分数
+            else {
+              $ret = nek_read_predict_score($contest["id"]);
+            ?>
+                <script>
+                  $(document).ready(function() {
+                    window.nek_show_all = 1;
+                    <?php foreach($ret as $ele) { ?>
+                      show_predict_score('<?php echo $ele[0]; ?>', [<?php echo $ele[1]; ?>]);
+                    <?php } ?>
+                  });
+                </script>
+              <?php
+            }
+            
+            
+            ?>
+            <script>
+                $(document).ready(function() {
+                    window.nek_utr = null;
+                    let username = '<?php echo $username; ?>';
+                    
+                    // username = 'nekko_test';
+                    
+                    $(`td > .uoj-username:contains('${username}')`).map(function(){
+    	               if($(this).text().replace(/ \(.*\)/,"") == `${username}`) {
+                           window.nek_utr = $(this).parent().parent();
+                       }
+         		    });
+                        
+                   // nek_utr.children(":nth-child(2)").append("<hr/>").append($("<a class='nek_pre_sco_upd btn btn-primary btn-block' href='#'>提交</a>"));
+                   
+                   if(!nek_utr || window.nek_show_all) {
+                     return ;
+                   }
+                   
+                   var pro_cnt = nek_utr.children().length - 3;
+                   // console.log(pro_cnt); 
+              	   for(var i = 1 ; i <= pro_cnt ; ++ i) {
+                       // console.log(i);
+                       // console.log(nek_utr.find(`td:nth-child(${3 + i}) > div:nth-child(1) > span`));
+         			   nek_utr.find(`td:nth-child(${3 + i}) > div:nth-child(1) > span`)
+                              .attr('nek_i', i)
+                              .attr('usr-na', username)
+                              .attr('contenteditable', 'true')
+                              .focus(function() {
+                                  $(this).text($(this).text().replace("(", "").replace(")", ""));
+                                  // $(this).select();
+                               })
+                              .blur(function() {
+                                  $.ajax({
+                                        url: `${window.location.href}?nek_usr_name=${$(this).attr('usr-na')}&nek_psc_key=${$(this).attr('nek_i')-1}&nek_psc_val=${$(this).text()}`,
+                                        success: (data) => {
+                                          // console.log(data);
+                                          if(data.length > 10) data = '0';
+                                          $(this).text("(" + data + ")");
+                                          show_predict_score($(this).attr('usr-na'), [-1]);
+                                        }
+                                  });
+                              
+                               });
+            		}
+                });
+            </script>
+            <?php
+        }
 	}
 	
 	function echoContestCountdown() {
@@ -475,6 +694,62 @@ EOD;
 	<h1><?= $contest['name'] ?></h1>
 	<?= getClickZanBlock('C', $contest['id'], $contest['zan']) ?>
 </div>
+
+<script>
+const tableToExcel = () => {
+    // 比赛名称
+    let title = $("body > div > div.uoj-content > div.text-center > h1").text();
+    let size = $("#standings > div.table-responsive > table > thead > tr").children().size();
+    let str = (() => {
+        let ret = [];
+        let tot_pro = $("#standings > div.table-responsive > table > thead > tr").children().size() - 3;
+        ret.push("用户名");
+        ret.push("总分");
+        for(let i = 0 ; i < tot_pro ; ++ i) {
+            ret.push("ABCDEFGHIJKLMN"[i]);
+        }
+        return ret.join(",") + "\n";
+    }) ();
+
+    const jsonData = (() => {
+        let ret = [];
+        // 学生总数
+        let tot_stu = $("#standings > div.table-responsive > table").find("tr").length - 1;
+
+        // 题目总数
+        let tot_pro = $("#standings > div.table-responsive > table > thead > tr").children().size() - 3;
+        for(let i = 1 ; i <= tot_stu ; ++ i) {
+        let tmp = {};
+        tmp["name"] = $(`#standings > div.table-responsive > table > tbody > tr:nth-child(${i}) > td:nth-child(2) > a`).text();
+        tmp["tot_score"] = $(`#standings > div.table-responsive > table > tbody > tr:nth-child(${i}) > td:nth-child(3) > div:nth-child(1) > span`).text();
+        for(let j = 1 ; j <= tot_pro ; ++ j) {
+            let tar = $(`#standings > div.table-responsive > table > tbody > tr:nth-child(${i}) > td:nth-child(${3 + j}) > div:nth-child(1) > a`).text();
+            if(tar == "") tar = "0";
+            tmp["ABCDEFGHIJKLMN"[j - 1]] = tar;
+        }
+        ret.push(tmp);
+      }
+      return ret;
+    }) ();
+    
+    // 增加\t为了不让表格显示科学计数法或者其他格式
+    for (let i = 0; i < jsonData.length; i++) {
+        for (const key in jsonData[i]) {
+            str += `${jsonData[i][key] + '\t' },`;
+        }
+        str += '\n';
+    }
+    // encodeURIComponent解决中文乱码
+    const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+    // 通过创建a标签实现
+    const link = document.createElement("a");
+    link.href = uri;
+    // 对下载的文件命名
+    link.download = title + ".csv";
+    link.click();
+};
+</script>
+
 <div class="row">
 	<?php if ($cur_tab == 'standings'): ?>
 	<div class="col-sm-12">
@@ -489,12 +764,22 @@ EOD;
 			} elseif ($cur_tab == 'submissions') {
 				echoMySubmissions();
 			} elseif ($cur_tab == 'standings') {
-				echoStandings();
+				echoStandings($_GET["after_sub"] ? true : false);
 			} elseif ($cur_tab == 'backstage') {
 				echoBackstage();
+			} else if($cur_tab == "after_sub") {
+				echoStandings(true);
 			}
 		?>
 		</div>
+		<?php if($_GET["after_sub"] == 1): ?>
+			<script>
+				$(document).ready(function() {
+					$(".active").removeClass("active");
+					$("a:contains(赛后排行榜)").addClass("active");
+				});
+			</script>
+		<?php endif ?>
 	</div>
 	
 	<?php if ($cur_tab == 'standings'): ?>

@@ -421,8 +421,6 @@ function echoSubmissionContent($submission, $requirement) {
 			switch ($file_language) {
 				case 'C++':
 				case 'C++11':
-				case 'C++14':
-				case 'C++17':
 					$sh_class = 'sh_cpp';
 					break;
 				case 'Python2':
@@ -675,11 +673,11 @@ class JudgementDetailsPrinter {
 				echo '</div>';
 			}
 		} elseif ($node->nodeName == 'in') {
-			echo "<h4>input:</h4><pre>\n";
+			echo "<h4>input: <a class='nek-input-class' href='#'></a></h4><pre>\n";
 			$this->_print_c($node);
 			echo "\n</pre>";
 		} elseif ($node->nodeName == 'out') {
-			echo "<h4>output:</h4><pre>\n";
+			echo "<h4>output: <a class='nek-output-class' href='#'></a></h4><pre>\n";
 			$this->_print_c($node);
 			echo "\n</pre>";
 		} elseif ($node->nodeName == 'res') {

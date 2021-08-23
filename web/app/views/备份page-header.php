@@ -41,11 +41,6 @@
 		
 		<script type="text/javascript">uojHome = ''</script>
 
-        
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/atelier-heath-light.min.css">
-        <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.0.0/build/highlight.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"></script>
-        
 		<!-- Bootstrap core CSS -->
 		<?= HTML::css_link('/css/bootstrap.min.css?v=2019.5.31') ?>
 		<!-- Font awesome CSS-->	
@@ -244,14 +239,6 @@
 		<?php if (UOJConfig::$data['switch']['web-analytics']): ?>
 		<script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "//hm.baidu.com/hm.js?bbd5ae87bf89e087603a1988103688ff";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm, s);})();</script>
 		<?php endif ?>
-
-
-
-		<!-- newcode BEGIN -->
-		<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
-		<!-- new code END -->
-
-
 	</head>
 	<body role="document">
 		<div class="container theme-showcase" role="main">
@@ -288,14 +275,12 @@
 			<?php endif ?>
 
 			<?php
-			// if (Auth::check() ) {
-            if (Auth::check() && !$_GET["hide_group"]) {
+			if (Auth::check()) {
 				$username = Auth::id();
 				$groups = queryGroupOfUser($username);
 				if (count($groups) > 0) {
 					$count = count($groups);
-					// echo '<div class="card card-default" style="margin-bottom: 1rem;"><div class="card-body">';
-                    echo '<div id="user-group" class="card card-default" style="margin-bottom: 1rem; display: none;"><div class="card-body">';
+					echo '<div class="card card-default" style="margin-bottom: 1rem;"><div class="card-body">';
 					echo '<p><b>您当前属于小组：</b>';
 					for ($i = 0; $i < $count; $i++) {
 						$group = $groups[$i];

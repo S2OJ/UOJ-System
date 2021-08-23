@@ -1,6 +1,6 @@
 <?php
 	requirePHPLib('judger');
-	
+ 
 	if (!authenticateJudger()) {
 		become404Page();
 	}

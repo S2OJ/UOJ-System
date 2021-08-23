@@ -19,6 +19,56 @@
 
 	$data_dir = "/var/uoj_data/${problem['id']}";
 
+
+if(isset($_POST['nek_sub_conf'])) {
+    // $set_filename="/var/uoj_data/upload/{$problem['id']}/problem.conf";
+    // 直接改svn仓库了
+    $set_filename="/var/uoj_data/{$problem['id']}/problem.conf";
+	$has_legacy=false;
+	if(file_exists($set_filename)){
+		$has_legacy=true;
+		unlink($set_filename);
+	}
+	$setfile = fopen($set_filename, "w");
+	fwrite($setfile, "use_builtin_judger on\n");
+	if($_POST['use_builtin_checker'] != 'ownchk'){
+		fwrite($setfile, "use_builtin_checker ".$_POST['use_builtin_checker']."\n");
+	}
+	fwrite($setfile, "n_tests ".$_POST['n_tests']."\n");
+	if($_POST['n_ex_tests']){
+		fwrite($setfile, "n_ex_tests ".$_POST['n_ex_tests']."\n");
+	}else{
+		fwrite($setfile, "n_ex_tests 0\n");
+	}
+	if($_POST['n_sample_tests']){
+		fwrite($setfile, "n_sample_tests ".$_POST['n_sample_tests']."\n");
+	}else{
+		fwrite($setfile, "n_sample_tests 0\n");
+	}
+	fwrite($setfile, "input_pre ".$_POST['input_pre']."\n");
+	fwrite($setfile, "input_suf ".$_POST['input_suf']."\n");
+	fwrite($setfile, "output_pre ".$_POST['output_pre']."\n");
+	fwrite($setfile, "output_suf ".$_POST['output_suf']."\n");
+	fwrite($setfile, "time_limit ".$_POST['time_limit']."\n");
+	fwrite($setfile, "memory_limit ".$_POST['memory_limit']."\n");
+ 
+    if($_POST['poster']){
+		fwrite($setfile, "poster ".$_POST['poster']."\n");
+	}else{
+		fwrite($setfile, "poster root\n");
+	}
+ 
+	fclose($setfile);
+	if(!$has_legacy){
+		echo "添加成功!";
+	}else{
+		echo "替换成功!";
+	}
+    
+    exit(0);
+}
+
+
 	function echoFileNotFound($file_name) {
 		echo '<h4>', htmlspecialchars($file_name), '<sub class="text-danger"> ', '文件未找到', '</sub></h4>';
 	}
@@ -35,7 +85,7 @@
 		finfo_close($finfo);
 
 		echo '<h4>', htmlspecialchars($file_name), '<sub> ', $mimetype, '</sub></h4>';
-		echo "<pre>\n";
+		echo "<pre  id='nek_ta' contenteditable='true'>\n";
 
 		$output_limit = 1000;
 		if (strStartWith($mimetype, 'text/')) {
@@ -44,6 +94,37 @@
 			echo htmlspecialchars(uojFilePreview($file_full_name, $output_limit, 'binary'));
 		}
 		echo "\n</pre>";
+    
+echo <<<EOD
+                <div class="text-center">
+                  <button id="nek_sub_textarea" class="mt-2 btn btn-secondary">提交</button>
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        $("#nek_sub_textarea").click(function() {
+                            var post_data = {};
+                            var mapcar = $("#nek_ta").text().split(/[\\n\\r\\t ]/).filter((e) => { return e === 0 || e });
+                            // console.log(mapcar);
+                            var len = mapcar.length;
+                            for(var i = 0 ; i < len ; i += 2) {
+                                post_data[mapcar[i]] = mapcar[i + 1];
+                            }
+                            post_data['nek_sub_conf'] = 1;
+                            // console.log(post_data);
+                            $.ajax({
+                                // 好像可以访问当前页欸……
+                                // [url] 默认值: 当前页地址。
+                                url: "",
+                                type: "POST",
+                                data: post_data,
+                                success: function(data) {
+                                    alert(data);
+                                }
+                            });
+                        });
+                    });
+                </script>
+EOD;
 	}
 
 
@@ -253,8 +334,8 @@ EOD
 				foreach ($self->problem_conf as $key => $info) {
 					if (!isset($info['status'])) {
 						echo '<tr>';
-						echo '<td>', htmlspecialchars($key), '</td>';
-						echo '<td>', htmlspecialchars($info['val']), '</td>';
+						echo '<td class="nek_man_key-val">', htmlspecialchars($key), '</td>';
+						echo '<td class="nek_man_key-val">', htmlspecialchars($info['val']), '</td>';
 						echo '</tr>';
 					} elseif ($info['status'] == 'danger') {
 						echo '<tr class="text-danger">';
@@ -263,8 +344,44 @@ EOD
 						echo '</tr>';
 					}
 				}
-				echo '</tbody>';
-				echo '</table>';
+
+echo <<<EOD
+<tr><td  colspan="2">
+                <div class="text-center">
+                  <button id="nek_sub_key-val" class="mt-2 btn btn-secondary">提交</button>
+                </div></td>
+                </tr>
+EOD;
+
+                echo '</table>';
+
+echo <<<EOD
+                <script>
+                  $(document).ready(function() {
+                      $(".nek_man_key-val").attr("contenteditable", "true");
+                      $("#nek_sub_key-val").click(function() {
+                          var post_data = {};
+                          var mapcar = $(".nek_man_key-val");
+                          var len = mapcar.length;
+                          for(var i = 0 ; i < len ; i += 2) {
+                              post_data[mapcar[i].innerHTML] = mapcar[i + 1].innerHTML;
+                          }
+                          post_data['nek_sub_conf'] = 1;
+                          // console.log(post_data);
+                          $.ajax({
+                              // 好像可以访问当前页欸……
+                              // [url] 默认值: 当前页地址。
+                              url: "",
+                              type: "POST",
+                              data: post_data,
+                              success: function(data) {
+                                  alert(data);
+                              }
+                          });
+                      });
+                  });
+                </script>
+EOD;
 
 				echoFilePre('problem.conf');
 			});
