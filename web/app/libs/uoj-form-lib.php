@@ -498,8 +498,12 @@ EOD;
 					}
 				}
 				echo <<<EOD
+            // console.log(post_data);
 		if (post_data != {}) {
 			post_data['check-{$this->form_name}'] = "";
+        
+          // console.log('${_SERVER['REQUEST_URI']}');
+        
 			$.ajax({
 				url : '${_SERVER['REQUEST_URI']}',
 				type : 'POST',
@@ -508,7 +512,6 @@ EOD;
 
 				data : post_data,
 				success : function(data) {
-
 EOD;
 				foreach ($this->data as $field) {
 					if ($field['validator_js'] == null) {

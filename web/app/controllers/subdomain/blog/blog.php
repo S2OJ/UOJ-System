@@ -148,6 +148,64 @@
 <?php echoUOJPageHeader(HTML::stripTags($blog['title']) . ' - 博客') ?>
 <?php echoBlog($blog, array('show_title_only' => isset($_GET['page']) && $_GET['page'] != 1)) ?>
 <h5>评论 <i class="fa fa-comment"></i></h5>
+
+
+<script>
+$(document).ready(function() {
+
+
+ //console.log($("[class*=comtbox] [class^=comtbox]"));
+ 
+	var md;
+	var defaults = {
+	  html: true, // Enable HTML tags in source
+	  xhtmlOut: false, // Use '/' to close single tags (<br />)
+	  breaks: false, // Convert '\n' in paragraphs into <br>
+	  langPrefix: 'language-', // CSS language prefix for fenced blocks
+	  linkify: true, // autoconvert URL-like texts to links
+	  typographer: true, // Enable smartypants and other sweet transforms
+	  // options below are for demo only
+	  _highlight: true,
+	  _strict: false,
+	  _view: 'html' // html / src / debug
+	};
+
+	defaults.highlight = function (str, lang) {
+	  var esc = md.utils.escapeHtml;
+	  // console.log(str)
+	  // console.log(lang)
+	  if (lang && hljs.getLanguage(lang)) {
+		try {
+          // console.log(str);
+          str = $("<div>").html(str).text();
+          // console.log(str);
+          // console.log(hljs.highlight(lang, str, true).value);
+		  return '<pre class="hljs"><code>' +
+				 hljs.highlight(lang, str, true).value +
+				 '</code></pre>';
+		} catch (__) {}
+	  }else {
+		return '<pre class="hljs"><code>' + esc(str) + '</code></pre>';
+	  }
+	  
+	};
+ 
+	
+ 
+ 
+	md = window.markdownit(defaults);
+ //console.log($("[class*=comtbox] [class^=comtbox]"));
+ 
+	$('div').filter(function() { return this.className.match(/comtbox.*/) && !this.id.match(/co.*|re.*/); }).each(function () {
+      // console.log(md.render($(this).html()));
+      $(this).html(md.render($(this).html()));
+    });
+ 
+   window.md = md;
+ 
+});
+</script>
+
 <div class="list-group">
 <?php if ($comments_pag->isEmpty()): ?>
 	<div class="list-group-item text-muted">暂无评论</div>

@@ -157,7 +157,7 @@
 <?php if ($should_show_all_details): ?>
 	<div class="card border-info mb-3">
 		<div class="card-header bg-info">
-			<h4 class="card-title"><?= UOJLocale::get('details') ?></h4>
+			<h4 class="card-title"><?= UOJLocale::get('details') ?> <a class="nek-down-all"></a></h4>
 		</div>
 		<div class="card-body">
 			<?php echoJudgementDetails($submission_result['details'], $styler, 'details') ?>
@@ -184,4 +184,26 @@
 		<?php $delete_form->printHTML() ?>
 	</div>
 <?php endif ?>
+
+<script>
+$(document).ready(function() {
+    window.pro_pid = $("body > div > div.uoj-content > div.table-responsive > table > tbody > tr > td:nth-child(2) > a").attr("href").split("/").pop();
+	if(!window.nek_input_cnt) window.nek_input_cnt = 1;
+	$('.nek-input-class').each(function() {
+      let cnt = window.nek_input_cnt ++;
+      $(this).text(cnt + ".in");
+      $(this).attr("href", `https://www.sjzezoj.com/download.php?type=problem&id=${window.pro_pid}&cnt=${cnt}&inout=in&normal=1`);
+    });
+	if(!window.nek_output_cnt) window.nek_output_cnt = 1;
+	$('.nek-output-class').each(function() {
+      let cnt = window.nek_output_cnt ++;
+      $(this).text(cnt + ".out");
+      $(this).attr("href", `https://www.sjzezoj.com/download.php?type=problem&id=${window.pro_pid}&cnt=${cnt}&inout=out&normal=1`);
+    });
+    
+    $('.nek-down-all').text("下载全部数据");
+    $('.nek-down-all').attr("href", `https://www.sjzezoj.com/download.php?type=problem&id=${window.pro_pid}&normal=1`);
+});
+</script>
+
 <?php echoUOJPageFooter() ?>

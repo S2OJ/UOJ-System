@@ -13,6 +13,7 @@
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/hacks') ?>"><i class="fa fa-exclamation-triangle"></i> <?= UOJLocale::get('hacks') ?></a></li>
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::blog_list_url() ?>"><i class="fa fa-pencil-square-o"></i> <?= UOJLocale::get('blogs') ?></a></li>
 			<li class="nav-item"><a class="nav-link" href="<?= HTML::url('/faq') ?>"><i class="fa fa-question-circle"></i> <?= UOJLocale::get('help') ?></a></li>
+			<li class="nav-item"><a class="nav-link" href="#" onclick="$('#user-group').toggle()"><i class="fa fa-list-alt"></i> 切换 </a></li>
 		</ul>
 		<form id="form-search-problem" class="form-inline my-2 my-lg-0" method="get">
 			 <div class="input-group">

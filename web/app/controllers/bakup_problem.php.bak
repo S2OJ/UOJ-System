@@ -5,119 +5,10 @@
 	if (!isUser($myUser)) {
 		become403Page();
 	}
- 
+	
 	if (!validateUInt($_GET['id']) || !($problem = queryProblemBrief($_GET['id']))) {
 		become404Page();
 	}
-
-    // var_dump($problem);
-?>
-
-
-
-
-
-
-
-
-
-<?php
-function comment_form_printHTML() {
-$pid = $_GET['id'];
-// echo "!@#"; exit(0);
- echo <<<EOD
-
-
-<!--<form action="/problem/$pid" method="post" class="form-horizontal" id="form-comment" enctype="multipart/form-data">-->
-<div id="div-comment" class="form-group">
-	<label for="input-comment" class="control-label">内容</label>
-	<textarea class="form-control" name="comment" id="input-comment" style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 54.1px;"></textarea>
-	<span class="help-block" id="help-comment"></span>
-</div>
-<div class="text-center"><button type="submit" id="button-submit-comment" name="submit-comment" value="comment" class="mt-2 btn btn-secondary">提交</button></div>
-<script>
-$(document).ready(function() {
-    $("#button-submit-comment").click(function() {
-        $.ajax({
-            url: "/problem/$pid",
-            type: "POST",
-            data: {
-                "comment": $("#input-comment").val()
-            },
-            success: function(data) {
-                // console.log(data);
-                location.replace(location.href.replace(/#/,"").replace(/\?.*/,"") + "?tj=0");
-            }
-        });
-    });
-});
-</script>
-<!--</form>-->
-EOD;
-};
-function comment_form_handle() {
-		global $myUser, $comment_form, $problem;
-    if(1) :
-    
-        $comment = '';
-        $r_id = 0;
-        if(isset($_POST['comment'])) {
-            $comment = HTML::escape($_POST['comment']);
-        } else if(isset($_POST['reply_comment'])) {
-            $comment = HTML::escape($_POST['reply_comment']);
-            $r_id = (int) ($_POST['reply_id']);
-        } else {
-            exit(0);
-        }
-		
-		
-		list($comment, $referrers) = uojHandleAtSign($comment, "/problem/{$problem['id']}");
-		
-		$esc_comment = DB::escape($comment);
-		
-        // echo "insert into nek_cmt (poster, cid, content, reply_id, post_time, zan) values ('{$myUser['username']}', '{$problem['id']}', '$esc_comment', 0, now(), 0)";
-        
-        DB::insert("insert into nek_cmt (poster, cid, content, reply_id, post_time, zan) values ('{$myUser['username']}', '{$problem['id']}', '$esc_comment', $r_id, now(), 0)");
-		
-        $comment_id = DB::insert_id();
-		
-		$rank = DB::selectCount("select count(*) from nek_cmt where cid = {$problem['id']} and reply_id = 0 and id < {$comment_id}");
-		$page = floor($rank / 20) + 1;
-		
-		$uri = getLongTablePageUri($page) . '#' . "comment-{$comment_id}";
-		
-		foreach ($referrers as $referrer) {
-			$content = '有人在题解 ' . $problem['title'] . ' 的评论里提到你：<a href="' . $uri . '">点击此处查看</a>';
-			sendSystemMsg($referrer, '有人提到你', $content);
-		}
-		
-    /*
-		if ($blog['poster'] !== $myUser['username']) {
-			$content = '有人回复了您的博客 ' . $blog['title'] . ' ：<a href="' . $uri . '">点击此处查看</a>';
-			sendSystemMsg($blog['poster'], '博客新回复通知', $content);
-		}
-    */
-		
-		// $comment_form->succ_href = getLongTablePageRawUri($page);
-    
-        // unset($_POST['comment']);
-        // unset($_POST['reply_comment']);
-    
-    endif;
-	};
-?>
-
-
-
-
-
-
-
-
-
-
-<?php
-
 	
 	$problem_content = queryProblemContent($problem['id']);
 	
@@ -154,14 +45,6 @@ function comment_form_handle() {
 			become404Page();
 		}
 	}
- 
- 
-   // 终于判断完了，下面应该是都有访问权限的
-   
-      if(isset($_POST["comment"]) || isset($_POST["reply_comment"])) {
-        comment_form_handle();
-        // exit(0);
-      }
 
 	$submission_requirement = json_decode($problem['submission_requirement'], true);
 	$problem_extra_config = getProblemExtraConfig($problem);
@@ -471,12 +354,10 @@ EOD;
 	$limit = getUOJConf("/var/uoj_data/{$problem['id']}/problem.conf");
 	$time_limit = $limit['time_limit'];
 	$memory_limit = $limit['memory_limit'];
-   $poster_limit = $limit['poster'];
 ?>
 <div class="row d-flex justify-content-center">
 	<span class="badge badge-secondary mr-1">时间限制:<?=$time_limit!=null?"$time_limit s":"N/A"?></span>
 	<span class="badge badge-secondary mr-1">空间限制:<?=$memory_limit!=null?"$memory_limit MB":"N/A"?></span>
-    <span class="badge badge-secondary mr-1">上传者:<?=$poster_limit!=null?"$poster_limit":"root"?></span> 
 </div>
 <div class="float-right">
 	<?= getClickZanBlock('P', $problem['id'], $problem['zan']) ?>
@@ -538,37 +419,6 @@ $('#contest-countdown').countdown(<?= $contest['end_time']->getTimestamp() - UOJ
 	<?php if ($solution_viewable): ?>
 	<div class="tab-pane" id="tab-solutions">
 
-<?php if(1): ?>
-	<!-- new codes BEGIN-->
-	<?php 
-	
-	global $contest;
-			// echo $contest['cur_progress'], ' ';
-			// echo CONTEST_TESTING;
-		// echo $contest;
-	?>
-	<?php if ($contest === NULL || isSuperUser($myUser) || $contest['cur_progress'] >= CONTEST_TESTING): ?>
-	<div>
-		<div id="vcomments"></div>
-		<script>
-			new Valine({
-				el: '#vcomments',
-				appId: 'LIrbXXrWQfHs8EVwh5K4mnOL-gzGzoHsz',
-				appKey: 'hlrkLoaj1uqgSDUme69qorOF'
-			});
-			jQuery("#tab-solutions").click(function() {
-				jQuery("[name=nick]").val("<?php echo $myUser['username']; ?>");
-			});
-			jQuery("[name=nick]").attr("disabled", "disabled");
-		</script>
-	</div>
-	<?php endif ?>
-	<!-- new codes END -->
-<?php endif; ?>
-
-
-<?php if(0): /* 啊这，就别要之前的题解系统了吧…… */ ?>		
-
 <?php
 	$cond = "(a.is_hidden = 0 or b.poster = '{$myUser['username']}') and a.problem_id = {$problem['id']}";
 	if (hasProblemPermission($myUser, $problem)) {
@@ -616,261 +466,12 @@ EOD;
 	
 ?>
 
-
 	<?php if ($solution_submittable): ?>
 	<h3 class="mt-4">发布题解</h3>
 	<p>要发布题解，您需要将您的题解发布为博客，然后将博客 ID 填在下面并发布。博客 ID 可以在标题下方找到。</p>
 	<p>注意，您只能发布自己的博客，并且这篇博客不能是隐藏的。</p>
 	<?php $add_new_solution_form->printHTML(); ?>
 	<?php endif ?>
-<?php endif ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php if ($contest === NULL || isSuperUser($myUser) || $contest['cur_progress'] >= CONTEST_TESTING): ?>
-
-
-<?php /*------------------------------------------------------------------------------------------------------------------------------------------------------*/ ?>
-
-<?php
-$pro_id = $problem['id'];
-// echo "select * from nek_cmt where cid=$pro_id"; 
-
-// $ret = DB::query("select * from nek_cmt where cid=$pro_id order by id");
-
-// $result=DB::query("select * from contests_asks where contest_id='${contest['id']}' and username='${myUser['username']}' order by reply_time desc limit 10");
-
-$result = DB::query("select * from nek_cmt where cid=$pro_id and reply_id=0 order by id");
-$cmt = [];
-try {
-	while ($row = DB::fetch($result)) {
-		$cmt[] = $row;
-	}
-} catch (Exception $e) {
-}
-
-// var_dump($cmt);
-// $cmt = [];
-// exit(0);
-
-// $arrt = array ('a'=>1,'b'=>2,'c'=>3,'d'=>4,'e'=>5);
-//echo json_encode($arrt);
-//exit(0);
-
-?>
-
-<h5>评论 <i class="fa fa-comment"></i></h5>
-<div class="list-group">
-<?php if ($cmt == []): ?>
-	<div class="list-group-item text-muted">暂无评论</div>
-<?php else: ?>
-	<?php foreach ($cmt as $comment):
-		$poster = queryUser($comment['poster']);
-		$esc_email = HTML::escape($poster['email']);
-		$asrc = HTML::avatar_addr($poster, 80);
-		
-		$replies = DB::selectAll("select id, poster, content, post_time from nek_cmt where reply_id = {$comment['id']} order by id");
-        // var_dump($replies);
-		foreach ($replies as $idx => $reply) {
-            // echo $idx . " ". $reply[0];
-			$replies[$idx]['poster_rating'] = queryUser($reply['poster'])['rating'];
-			$replies[$idx]['poster_realname'] = queryUser($reply['poster'])['realname'];
-		}
-      // var_dump($replies);
-      // var_dump(json_encode($replies));
-      // exit(0);
-      // var_dump(json_encode($replies));
-		$replies_json = json_encode($replies);
-      //var_dump($replies_json);
-      //exit(0);
-	?>
-	<div id="comment-<?= $comment['id'] ?>" class="list-group-item">
-		<div class="media">
-			<div class="media-left comtposterbox mr-3">
-				<a href="<?= HTML::url('/user/profile/'.$poster['username']) ?>" class="d-none d-sm-block">
-					<img class="media-object img-rounded" src="<?= $asrc ?>" alt="avatar" />
-				</a>
-			</div>
-			<div id="comment-body-<?= $comment['id'] ?>" class="media-body comtbox">
-				<div class="row">
-					<div class="col-sm-6"><?= getUserLink($poster['username']) ?></div>
-					<div class="col-sm-6 text-right"><?= getClickZanBlock('BC', $comment['id'], $comment['zan']) ?></div>
-				</div>
-				<div class="comtbox1"><?= $comment['content'] ?></div>
-				<ul class="text-right list-inline bot-buffer-no"><li><small class="text-muted"><?= $comment['post_time'] ?></small></li><li><a id="reply-to-<?= $comment['id'] ?>" href="#">回复</a></li></ul>
-				<?php if ($replies): ?>
-				<div id="replies-<?= $comment['id'] ?>" class="comtbox5"></div>
-				<?php endif ?>
-				<script type="text/javascript">showCommentReplies('<?= $comment['id'] ?>', <?= $replies_json ?>);</script>
-			</div>
-		</div>
-	</div>
-	<?php endforeach ?>
-<?php endif ?>
-</div>
-
-
-<?php
-/*
-  $comments_pag = new Paginator(array(
-		'col_names' => array('*'),
-		'table_name' => 'nek_cmt',
-		'cond' => 'blog_id = ' . $problem['id'] . ' and reply_id = 0',
-		'tail' => 'order by id asc',
-		'page_len' => 20
-	));*/
-
-?>
-
-<?php /*$comments_pag->pagination();*/ ?>
-<h5 class="mt-4">发表评论</h5>
-<p>可以用 @mike 来提到 mike 这个用户，mike 会被高亮显示。如果你真的想打 “@” 这个字符，请用 “@@”。</p>
-
-<?php comment_form_printHTML();  ?>
-
-<div id="div-form-reply" style="display:none">
-    	<!--<form action="/problem/<?php echo $problem['id']; ?>" method="post" class="form-horizontal" id="form-reply" enctype="multipart/form-data">-->
-          <input type="hidden" name="reply_id" id="input-reply_id" value="">
-          <div id="div-reply_comment" class="form-group">
-    	    <label for="input-reply_comment" class="control-label">内容</label>
-  	      <textarea class="form-control" name="reply_comment" id="input-reply_comment" style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 54.1px;"></textarea>
-    	  <span class="help-block" id="help-reply_comment"></span>
-    </div>
-    <div class="text-center"><button type="submit" id="button-submit-reply" name="submit-reply" value="reply" class="mt-2 btn btn-secondary">提交</button></div>
-    
-<script>
-$(document).ready(function() {
-    $("#button-submit-reply").click(function() {
-        window.nek_f_rid = $("#input-reply_id").val();
-        $.ajax({
-            url: "/problem/<?php echo $problem['id']; ?>",
-            type: "POST",
-            data: {
-                "reply_comment": $("#input-reply_comment").val(),
-                "reply_id": window.nek_f_rid
-            },
-            success: function(data) {
-                // console.log(data);
-                location.replace(location.href.replace(/#/,"").replace(/\?.*/,"") + "?tj=" + window.nek_f_rid);
-            }
-        });
-    });
-});
-</script>
-    
-    <!--</form>-->
-</div>
-
-
-<?php /*------------------------------------------------------------------------------------------------------------------------------------------------------*/ ?>
-
-
-<?php if(isset($_GET['tj'])): ?>
-<script>
-$(document).ready(function() {
-
-  try{
-
-    $("body > div.container.theme-showcase > div.uoj-content > ul > li:nth-child(3) > a").click();
-
-    <?php if($_GET['tj'] == 0): /* 打开题解 */ ?>
-          // $(document).scrollTop(999999);
-          console.log($("#div-comment"));
-          $(document).scrollTop($("#div-comment").offset().top);
-    <?php endif; ?>
-    <?php if($_GET['tj'] > 0): /* 打开题解 */ ?>
-          $(document).scrollTop($("#comment-body-<?php echo $_GET['tj']; ?>").offset().top);
-          $("#comment-body-<?php echo $_GET['tj']; ?>").parent().css('display', 'none').fadeIn(1000);
-    <?php endif; ?>
-    }catch(e) {};
-});
-</script>
-<?php endif; ?>
-
-
-<?php endif; ?>
-
-
-
-<script>
-$(document).ready(function() {
-
-
- //console.log($("[class*=comtbox] [class^=comtbox]"));
- 
-	var md;
-	var defaults = {
-	  html: true, // Enable HTML tags in source
-	  xhtmlOut: false, // Use '/' to close single tags (<br />)
-	  breaks: false, // Convert '\n' in paragraphs into <br>
-	  langPrefix: 'language-', // CSS language prefix for fenced blocks
-	  linkify: true, // autoconvert URL-like texts to links
-	  typographer: true, // Enable smartypants and other sweet transforms
-	  // options below are for demo only
-	  _highlight: true,
-	  _strict: false,
-	  _view: 'html' // html / src / debug
-	};
-
-	defaults.highlight = function (str, lang) {
-	  var esc = md.utils.escapeHtml;
-	  // console.log(str)
-	  // console.log(lang)
-	  if (lang && hljs.getLanguage(lang)) {
-		try {
-          // console.log(str);
-          str = $("<div>").html(str).text();
-          // console.log(str);
-          // console.log(hljs.highlight(lang, str, true).value);
-		  return '<pre class="hljs"><code>' +
-				 hljs.highlight(lang, str, true).value +
-				 '</code></pre>';
-		} catch (__) {}
-	  }else {
-		return '<pre class="hljs"><code>' + esc(str) + '</code></pre>';
-	  }
-	  
-	};
- 
-	
- 
- 
-	md = window.markdownit(defaults);
- //console.log($("[class*=comtbox] [class^=comtbox]"));
- 
-	$('div').filter(function() { return this.className.match(/comtbox.*/) && !this.id.match(/co.*|re.*/); }).each(function () {
-      // console.log(md.render($(this).html()));
-      $(this).html(md.render($(this).html()));
-    });
- 
-   window.md = md;
- 
-});
-</script>
-
-
-
-
-
-
 
 	</div>
 	<?php endif ?>

@@ -165,7 +165,8 @@ function blog_editor_init(name, editor_config) {
 		$.ajax({
 			type: 'POST',
 			data: post_data,
-			url: `${window.location.href}?hide_group=1`,
+			// url: window.location.href,
+            url: `${window.location.href}?hide_group=1`,
 			success: function (data) {
 				try {
 					data = JSON.parse(data)
