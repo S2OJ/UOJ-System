@@ -1,3 +1,7 @@
+# 请前往 [renbaoshuo/S2OJ](https://github.com/renbaoshuo/S2OJ) 获取最新源码。
+
+---
+
 <p align="center"><img src="https://github.com/UniversalOJ/UOJ-System/blob/master/web/images/logo.png?raw=true"></p>
 
 # Universal Online Judge
